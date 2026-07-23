@@ -1,103 +1,125 @@
 import { Ionicons } from '@expo/vector-icons';
-import { Pressable, ScrollView, TextInput, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import { useState, useMemo } from 'react';
+import { FlatList, Pressable, TextInput, View } from 'react-native';
+import { MapView, Marker, Callout } from './MapViewWrapper';
+
 import { ThemedText, ThemedView } from '../../shared';
 import { CastleIcon } from '../castle';
+import { streets } from '@/src/data/streets';
 import { mapaStyles } from './mapa.styles';
 
 export function Mapa() {
+  const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredStreets = useMemo(
+    () =>
+      searchQuery
+        ? streets.filter((s) =>
+            s.name.toLowerCase().includes(searchQuery.toLowerCase()),
+          )
+        : [],
+    [searchQuery],
+  );
+
+  const handleStreetPress = (id: string) => {
+    setSearchQuery('');
+    router.push(`/street/${id}` as any);
+  };
+
   return (
     <ThemedView style={mapaStyles.container}>
-      <ScrollView 
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={mapaStyles.scrollContent}
-      >
-        {/* Header con imagen de castillo encima del texto */}
-        <View style={mapaStyles.headerContainer}>
-          <CastleIcon size={60} color="#8B7355" />
-          <ThemedText style={mapaStyles.mainTitle}>Cartagena</ThemedText>
-          <ThemedText style={mapaStyles.subtitle}>• NOMENCLADOR •</ThemedText>
-        </View>
+      <View style={mapaStyles.headerContainer}>
+        <CastleIcon size={50} color="#8B7355" />
+        <ThemedText style={mapaStyles.mainTitle}>Cartagena</ThemedText>
+        <ThemedText style={mapaStyles.subtitle}>• NOMENCLADOR •</ThemedText>
+      </View>
 
-        {/* Search Bar - FUERA DEL MAPA */}
-        <View style={mapaStyles.searchContainer}>
-          <Ionicons name="search" size={20} color="#8B8680" style={mapaStyles.searchIcon} />
-          <TextInput
-            style={mapaStyles.searchInput}
-            placeholder="Buscar calle o monumento..."
-            placeholderTextColor="#A89A8E"
+      <View style={mapaStyles.searchContainer}>
+        <Ionicons name="search" size={20} color="#8B8680" style={mapaStyles.searchIcon} />
+        <TextInput
+          style={mapaStyles.searchInput}
+          placeholder="Buscar calle o monumento..."
+          placeholderTextColor="#A89A8E"
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+        />
+        {searchQuery ? (
+          <Pressable onPress={() => setSearchQuery('')}>
+            <Ionicons name="close-circle" size={20} color="#8B8680" />
+          </Pressable>
+        ) : null}
+      </View>
+
+      {searchQuery && filteredStreets.length > 0 ? (
+        <View style={mapaStyles.searchResultsContainer}>
+          <FlatList
+            data={filteredStreets}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <Pressable
+                style={mapaStyles.searchResultItem}
+                onPress={() => handleStreetPress(item.id)}
+              >
+                <Ionicons name="location-outline" size={18} color="#8B7355" />
+                <View style={mapaStyles.searchResultText}>
+                  <ThemedText style={mapaStyles.searchResultName}>{item.name}</ThemedText>
+                  <ThemedText style={mapaStyles.searchResultPeriod}>{item.period}</ThemedText>
+                </View>
+              </Pressable>
+            )}
+            style={mapaStyles.searchResultsList}
           />
         </View>
+      ) : null}
 
-        {/* Map Area */}
-        <View style={mapaStyles.mapContainer}>
-          <View style={mapaStyles.mapImage}>
-            {/* Pins en el mapa */}
-            <View style={[mapaStyles.pin, { top: '20%', left: '22%' }]} />
-            <View style={[mapaStyles.pin, { top: '38%', right: '18%' }]} />
-            <View style={[mapaStyles.pin, { bottom: '18%', right: '12%' }]} />
-            <View style={[mapaStyles.pin, { bottom: '28%', left: '18%' }]} />
-            
-            {/* Location Badge */}
-            <View style={mapaStyles.locationBadge}>
-              <Ionicons name="pin" size={18} color="white" />
-              <ThemedText style={mapaStyles.locationText}>
-                Usted está aquí
-              </ThemedText>
-            </View>
-          </View>
-        </View>
+      <MapView
+        style={mapaStyles.mapView}
+        initialRegion={{
+          latitude: 10.423,
+          longitude: -75.5504,
+          latitudeDelta: 0.02,
+          longitudeDelta: 0.02,
+        }}
+        showsUserLocation
+        showsCompass
+      >
+        {streets.map((street) => (
+          <Marker
+            key={street.id}
+            coordinate={{ latitude: street.latitude, longitude: street.longitude }}
+            title={street.name}
+            description={street.period}
+            onCalloutPress={() => handleStreetPress(street.id)}
+            pinColor="#C85A54"
+          >
+            <Callout>
+              <View style={mapaStyles.calloutContainer}>
+                <ThemedText style={mapaStyles.calloutTitle}>{street.name}</ThemedText>
+                <ThemedText style={mapaStyles.calloutPeriod}>{street.period}</ThemedText>
+              </View>
+            </Callout>
+          </Marker>
+        ))}
+      </MapView>
 
-        {/* Info Card */}
-        <View style={mapaStyles.infoCard}>
-          <View style={mapaStyles.cardImagePlaceholder}>
-            <Ionicons name="image" size={38} color="#9A8D7E" />
-          </View>
-          
-          <View style={mapaStyles.cardTextContent}>
-            <ThemedText style={mapaStyles.cardStreet}>
-              Calle de la Media Luna
-            </ThemedText>
-            <ThemedText style={mapaStyles.cardPeriod}>
-              Siglo XVII
-            </ThemedText>
-            <ThemedText style={mapaStyles.cardDescription}>
-              Descubre la historia de esta calle.
-            </ThemedText>
-          </View>
-        </View>
-
-        {/* Carousel indicators */}
-        <View style={mapaStyles.dotsContainer}>
-          <View style={[mapaStyles.dot, mapaStyles.activeDot]} />
-          <View style={mapaStyles.dot} />
-          <View style={mapaStyles.dot} />
-        </View>
-
-        {/* Navigation Buttons */}
-        <View style={mapaStyles.buttonsContainer}>
-          <NavButton icon="leaf" label="Explorar" color="#5A7A72" />
-          <NavButton icon="heart" label="Colección" color="#997A59" />
-          <NavButton icon="pricetag" label="Tienda" color="#8B7355" />
-          <NavButton icon="person-circle" label="Mi Perfil" color="#486B8E" />
-        </View>
-      </ScrollView>
-    </ThemedView>
-  );
-}
-
-interface NavButtonProps {
-  icon: keyof typeof Ionicons.glyphMap;
-  label: string;
-  color: string;
-}
-
-function NavButton({ icon, label, color }: NavButtonProps) {
-  return (
-    <Pressable style={mapaStyles.navButtonWrapper}>
-      <View style={[mapaStyles.navIconButton, { backgroundColor: color }]}>
-        <Ionicons name={icon} size={28} color="white" />
+      <View style={mapaStyles.quickActions}>
+        <Pressable
+          style={[mapaStyles.quickActionBtn, { backgroundColor: '#5A7A72' }]}
+          onPress={() => router.push('/calles' as any)}
+        >
+          <Ionicons name="leaf" size={22} color="white" />
+          <ThemedText style={mapaStyles.quickActionLabel}>Explorar</ThemedText>
+        </Pressable>
+        <Pressable
+          style={[mapaStyles.quickActionBtn, { backgroundColor: '#8B7355' }]}
+          onPress={() => router.push('/(tabs)/tienda' as any)}
+        >
+          <Ionicons name="pricetag" size={22} color="white" />
+          <ThemedText style={mapaStyles.quickActionLabel}>Tienda</ThemedText>
+        </Pressable>
       </View>
-      <ThemedText style={mapaStyles.navButtonLabel}>{label}</ThemedText>
-    </Pressable>
+    </ThemedView>
   );
 }

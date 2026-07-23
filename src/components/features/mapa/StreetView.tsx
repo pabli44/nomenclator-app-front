@@ -1,130 +1,95 @@
-import { useNavigation } from '@react-navigation/native';
-import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useState } from 'react';
+import { Pressable, ScrollView, View } from 'react-native';
 
-const StreetView = () => {
-  const navigation = useNavigation();
+import { ThemedText, ThemedView } from '../../shared';
+import { type Street } from '@/src/data/streets';
+import { streetViewStyles } from './street-view.styles';
+
+interface StreetViewProps {
+  street: Street;
+}
+
+export function StreetView({ street }: StreetViewProps) {
+  const [showAfter, setShowAfter] = useState(false);
 
   return (
-    <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.title}>Calle La Media Luna</Text>
-        <TouchableOpacity style={styles.bookmarkButton}>
-          <Text style={styles.bookmarkText}>🔖</Text>
-        </TouchableOpacity>
-      </View>
+    <ThemedView style={streetViewStyles.container}>
+      <ScrollView contentContainerStyle={streetViewStyles.scrollContent}>
+        <View style={streetViewStyles.imageContainer}>
+          <View style={streetViewStyles.imagePlaceholder}>
+            <Ionicons name="image" size={48} color="#9A8D7E" />
+            <ThemedText style={streetViewStyles.imagePlaceholderText}>
+              {showAfter ? 'Foto actual' : 'Foto histórica'}
+            </ThemedText>
+          </View>
+          <View style={streetViewStyles.imageOverlay}>
+            <ThemedText style={streetViewStyles.imageLabel}>
+              {showAfter ? 'AHORA' : 'ANTES'}
+            </ThemedText>
+          </View>
 
-      {/* Period Selector */}
-      <View style={styles.periodSelector}>
-        <TouchableOpacity style={styles.periodButton}><Text>Todos</Text></TouchableOpacity>
-        <TouchableOpacity style={styles.periodButton}><Text>Colonia</Text></TouchableOpacity>
-        <TouchableOpacity style={styles.periodButton}><Text>Siglo XIX</Text></TouchableOpacity>
-        <TouchableOpacity style={styles.periodButton}><Text>Siglo XX</Text></TouchableOpacity>
-      </View>
-
-      {/* Images */}
-      <View style={styles.imageContainer}>
-        <View style={styles.imageWrapper}>
-          <Text style={styles.imageLabel}>ANTES</Text>
-          <Image source={require('../assets/images/old-street.jpg')} style={styles.image} />
-          <Text style={styles.imagePeriod}>Siglo XIX</Text>
+          <Pressable
+            style={streetViewStyles.toggleBtn}
+            onPress={() => setShowAfter(!showAfter)}
+          >
+            <Ionicons name="swap-horizontal" size={20} color="white" />
+            <ThemedText style={streetViewStyles.toggleBtnText}>
+              {showAfter ? 'Ver antes' : 'Ver ahora'}
+            </ThemedText>
+          </Pressable>
         </View>
-        <View style={styles.imageWrapper}>
-          <Text style={styles.imageLabel}>AHORA</Text>
-          <Image source={require('../assets/images/current-street.jpg')} style={styles.image} />
-          <Text style={styles.imagePeriod}>2024</Text>
+
+        <View style={streetViewStyles.infoSection}>
+          <ThemedText style={streetViewStyles.streetName}>{street.name}</ThemedText>
+          <View style={streetViewStyles.periodBadge}>
+            <ThemedText style={streetViewStyles.periodText}>{street.period}</ThemedText>
+          </View>
         </View>
-      </View>
 
-      {/* Description */}
-      <Text style={styles.description}>
-        La transformación de esta calle a lo largo del tiempo.
-      </Text>
+        <View style={streetViewStyles.descriptionCard}>
+          <ThemedText style={streetViewStyles.descriptionText}>{street.history}</ThemedText>
+        </View>
 
-      {/* Buttons */}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.actionButton}><Text>Comprar imagen</Text></TouchableOpacity>
-        <TouchableOpacity style={styles.actionButton}><Text>Guardar</Text></TouchableOpacity>
-      </View>
-    </View>
+        {street.monuments.length > 0 && (
+          <View style={streetViewStyles.monumentsSection}>
+            <ThemedText style={streetViewStyles.sectionTitle}>
+              Monumentos destacados
+            </ThemedText>
+            {street.monuments.map((monument) => (
+              <View key={monument.id} style={streetViewStyles.monumentCard}>
+                <View style={streetViewStyles.monumentImagePlaceholder}>
+                  <Ionicons name="business" size={28} color="#9A8D7E" />
+                </View>
+                <View style={streetViewStyles.monumentInfo}>
+                  <ThemedText style={streetViewStyles.monumentName}>
+                    {monument.name}
+                  </ThemedText>
+                  <ThemedText style={streetViewStyles.monumentPeriod}>
+                    {monument.period}
+                  </ThemedText>
+                  <ThemedText style={streetViewStyles.monumentDescription}>
+                    {monument.description}
+                  </ThemedText>
+                </View>
+              </View>
+            ))}
+          </View>
+        )}
+
+        <View style={streetViewStyles.actionButtons}>
+          <Pressable style={streetViewStyles.actionBtn}>
+            <Ionicons name="cart" size={18} color="white" />
+            <ThemedText style={streetViewStyles.actionBtnText}>Comprar imagen</ThemedText>
+          </Pressable>
+          <Pressable style={[streetViewStyles.actionBtn, streetViewStyles.actionBtnSecondary]}>
+            <Ionicons name="heart-outline" size={18} color="#8B7355" />
+            <ThemedText style={[streetViewStyles.actionBtnText, { color: '#8B7355' }]}>
+              Guardar
+            </ThemedText>
+          </Pressable>
+        </View>
+      </ScrollView>
+    </ThemedView>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5dc',
-    padding: 16,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#5a4638',
-  },
-  bookmarkButton: {
-    padding: 8,
-  },
-  bookmarkText: {
-    fontSize: 24,
-  },
-  periodSelector: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 16,
-  },
-  periodButton: {
-    padding: 8,
-    backgroundColor: '#e0c097',
-    borderRadius: 8,
-  },
-  imageContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 16,
-  },
-  imageWrapper: {
-    flex: 1,
-    alignItems: 'center',
-    marginHorizontal: 8,
-  },
-  image: {
-    width: '100%',
-    height: 150,
-    resizeMode: 'cover',
-    borderRadius: 8,
-  },
-  imageLabel: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  imagePeriod: {
-    marginTop: 8,
-    fontSize: 14,
-    color: '#5a4638',
-  },
-  description: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 16,
-    color: '#5a4638',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  actionButton: {
-    padding: 12,
-    backgroundColor: '#e0c097',
-    borderRadius: 8,
-  },
-});
-
-export default StreetView;
+}
