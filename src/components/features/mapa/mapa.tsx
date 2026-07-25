@@ -1,9 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { useState, useMemo } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { FlatList, Pressable, TextInput, View } from 'react-native';
-import { MapView, Marker, Callout } from './MapViewWrapper';
+import * as Location from 'expo-location';
 
+import { MapView, Marker, Callout } from './MapViewWrapper';
 import { ThemedText, ThemedView } from '../../shared';
 import { CastleIcon } from '../castle';
 import { streets } from '@/src/data/streets';
@@ -12,6 +13,20 @@ import { mapaStyles } from './mapa.styles';
 export function Mapa() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
+  const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') return;
+
+      const loc = await Location.getCurrentPositionAsync({});
+      setUserLocation({
+        latitude: loc.coords.latitude,
+        longitude: loc.coords.longitude,
+      });
+    })();
+  }, []);
 
   const filteredStreets = useMemo(
     () =>
@@ -74,25 +89,19 @@ export function Mapa() {
         </View>
       ) : null}
 
-      <MapView
-        style={mapaStyles.mapView}
-        initialRegion={{
-          latitude: 10.423,
-          longitude: -75.5504,
-          latitudeDelta: 0.02,
-          longitudeDelta: 0.02,
-        }}
-        showsUserLocation
-        showsCompass
-      >
+      <MapView style={mapaStyles.mapView}>
+        {userLocation && (
+          <Marker
+            coordinate={userLocation}
+            isUserLocation
+          />
+        )}
         {streets.map((street) => (
           <Marker
             key={street.id}
             coordinate={{ latitude: street.latitude, longitude: street.longitude }}
             title={street.name}
-            description={street.period}
             onCalloutPress={() => handleStreetPress(street.id)}
-            pinColor="#C85A54"
           >
             <Callout>
               <View style={mapaStyles.calloutContainer}>

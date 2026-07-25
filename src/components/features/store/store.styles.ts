@@ -19,9 +19,13 @@ export const storeStyles = StyleSheet.create({
   headerTitle: { fontSize: 28, fontWeight: '800', color: '#3D2817' },
   headerSubtitle: { fontSize: 12, color: '#7D6B56', fontWeight: '600', marginTop: 2 },
 
+  categoriesScroll: {
+    maxHeight: 52,
+  },
   categoriesContainer: {
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingVertical: 8,
+    alignItems: 'center',
     gap: 8,
   },
   categoryChip: {
@@ -48,7 +52,8 @@ export const storeStyles = StyleSheet.create({
 
   productsGrid: {
     paddingHorizontal: H_PADDING,
-    paddingBottom: 24,
+    paddingBottom: 40,
+    flexGrow: 1,
   },
   productsRow: {
     justifyContent: 'space-between',
@@ -61,6 +66,11 @@ export const storeStyles = StyleSheet.create({
     borderRadius: 10,
     overflow: 'hidden',
     elevation: 2,
+    minHeight: CARD_WIDTH * 1.5,
+  },
+  cardImage: {
+    width: '100%',
+    height: CARD_WIDTH * 0.85,
   },
   cardImagePlaceholder: {
     width: '100%',
@@ -71,6 +81,8 @@ export const storeStyles = StyleSheet.create({
   },
   cardBody: {
     padding: 10,
+    flex: 1,
+    justifyContent: 'space-between',
   },
   cardCategory: {
     fontSize: 10,

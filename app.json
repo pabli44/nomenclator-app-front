@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "nomenclator-app-front",
-    "slug": "nomenclator-app-front",
+    "name": "Nomenclator",
+    "slug": "nomenclator-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -9,7 +9,13 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "TU_API_KEY_IOS"
+      },
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Necesitamos tu ubicación para mostrarte en el mapa"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -19,7 +25,12 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "config": {
+        "googleMaps": {
+          "apiKey": "TU_API_KEY_ANDROID"
+        }
+      }
     },
     "web": {
       "output": "static",

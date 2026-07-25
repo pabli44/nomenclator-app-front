@@ -8,8 +8,10 @@ export const streetViewStyles = StyleSheet.create({
     height: 280,
     backgroundColor: '#DFD4C4',
     position: 'relative',
-    justifyContent: 'center',
-    alignItems: 'center',
+  },
+  streetImage: {
+    width: '100%',
+    height: '100%',
   },
   imagePlaceholder: {
     alignItems: 'center',
@@ -110,6 +112,12 @@ export const streetViewStyles = StyleSheet.create({
     borderRadius: 10,
     padding: 12,
     marginBottom: 10,
+  },
+  monumentImage: {
+    width: 56,
+    height: 56,
+    borderRadius: 8,
+    marginRight: 12,
   },
   monumentImagePlaceholder: {
     width: 56,
