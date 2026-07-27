@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
-import { FlatList, Pressable, View } from 'react-native';
+import { FlatList, Pressable, ScrollView, View } from 'react-native';
 
 import { ThemedText, ThemedView } from '../../shared';
 import { products } from '@/src/data/products';
@@ -29,33 +29,35 @@ export function StoreScreen() {
         <Ionicons name="cart-outline" size={28} color="#5D4B38" />
       </View>
 
-      <FlatList
-        data={categories}
+      <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={storeStyles.categoriesContainer}
-        renderItem={({ item }) => (
+        style={storeStyles.categoriesScroll}
+      >
+        {categories.map((cat) => (
           <Pressable
+            key={cat}
             style={[
               storeStyles.categoryChip,
-              selectedCategory === item && storeStyles.categoryChipActive,
+              selectedCategory === cat && storeStyles.categoryChipActive,
             ]}
-            onPress={() => setSelectedCategory(item)}
+            onPress={() => setSelectedCategory(cat)}
           >
             <ThemedText
               style={[
                 storeStyles.categoryChipText,
-                selectedCategory === item && storeStyles.categoryChipTextActive,
+                selectedCategory === cat && storeStyles.categoryChipTextActive,
               ]}
             >
-              {item}
+              {cat}
             </ThemedText>
           </Pressable>
-        )}
-        keyExtractor={(item) => item}
-      />
+        ))}
+      </ScrollView>
 
       <FlatList
+        key={selectedCategory}
         data={filtered}
         numColumns={2}
         showsVerticalScrollIndicator={false}
@@ -63,6 +65,7 @@ export function StoreScreen() {
         columnWrapperStyle={storeStyles.productsRow}
         renderItem={({ item }) => <ProductCard product={item} />}
         keyExtractor={(item) => item.id}
+        style={{ flex: 1 }}
         ListEmptyComponent={
           <View style={storeStyles.emptyContainer}>
             <Ionicons name="bag-outline" size={48} color="#C9B89F" />

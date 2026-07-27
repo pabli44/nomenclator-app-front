@@ -1,9 +1,11 @@
+import type { ImageSourcePropType } from 'react-native';
+
 export interface Monument {
   id: string;
   name: string;
   description: string;
   period: string;
-  image?: string;
+  image?: ImageSourcePropType;
 }
 
 export interface Street {
@@ -14,8 +16,8 @@ export interface Street {
   history: string;
   latitude: number;
   longitude: number;
-  imageBefore?: string;
-  imageAfter?: string;
+  imageBefore?: ImageSourcePropType;
+  imageAfter?: ImageSourcePropType;
   monuments: Monument[];
 }
 
@@ -29,18 +31,22 @@ export const streets: Street[] = [
       'La Calle de la Media Luna debe su nombre a la forma curva que describe su trazado, semejante a una luna en cuarto creciente. Durante la época colonial, esta calle albergó a importantes comerciantes y militares.',
     latitude: 10.423,
     longitude: -75.5504,
+    imageBefore: require('@/assets/images/streets/street_1.jpg'),
+    imageAfter: require('@/assets/images/streets/street_2.jpg'),
     monuments: [
       {
         id: 'm1',
         name: 'Casa del Marqués de Valdehoyos',
         description: 'Casona colonial del siglo XVIII con hermosa portada en piedra.',
         period: 'Siglo XVIII',
+        image: require('@/assets/images/monuments/monument_1.jpg'),
       },
       {
         id: 'm2',
         name: 'Iglesia de Santo Domingo',
         description: 'Una de las iglesias más antiguas de la ciudad, construida entre 1550 y 1570.',
         period: 'Siglo XVI',
+        image: require('@/assets/images/monuments/monument_2.jpg'),
       },
     ],
   },
@@ -53,12 +59,15 @@ export const streets: Street[] = [
       'Esta calle ha sido testigo del desarrollo eclesiástico de Cartagena. Alberga algunas de las construcciones religiosas más importantes de la ciudad.',
     latitude: 10.4245,
     longitude: -75.5518,
+    imageBefore: require('@/assets/images/streets/street_2.jpg'),
+    imageAfter: require('@/assets/images/streets/street_3.jpg'),
     monuments: [
       {
         id: 'm3',
         name: 'Catedral de Cartagena',
         description: 'Catedral Basílica Metropolitana Santa Catalina de Alejandría.',
         period: 'Siglo XVI',
+        image: require('@/assets/images/monuments/monument_2.jpg'),
       },
     ],
   },
@@ -71,12 +80,15 @@ export const streets: Street[] = [
       'La Calle de la Factoría albergó los principales almacenes y casas de comercio durante la época virreinal. Su nombre proviene de las factorías (almacenes) que allí se establecieron.',
     latitude: 10.4225,
     longitude: -75.5495,
+    imageBefore: require('@/assets/images/streets/street_3.jpg'),
+    imageAfter: require('@/assets/images/streets/street_1.jpg'),
     monuments: [
       {
         id: 'm4',
         name: 'Edificio de la Aduana',
         description: 'Antiguo edificio de la Real Aduana, hoy sede de la Alcaldía.',
         period: 'Siglo XVIII',
+        image: require('@/assets/images/monuments/monument_1.jpg'),
       },
     ],
   },
@@ -89,12 +101,15 @@ export const streets: Street[] = [
       'Debe su nombre a un alto oficial militar que habitó en esta calle durante el siglo XVII. Conserva algunos de los mejores ejemplos de arquitectura doméstica colonial.',
     latitude: 10.4218,
     longitude: -75.5525,
+    imageBefore: require('@/assets/images/streets/street_1.jpg'),
+    imageAfter: require('@/assets/images/streets/street_2.jpg'),
     monuments: [
       {
         id: 'm5',
         name: 'Casa de Rafael Núñez',
         description: 'Antigua residencia del expresidente Rafael Núñez, hoy museo.',
         period: 'Siglo XIX',
+        image: require('@/assets/images/monuments/monument_1.jpg'),
       },
     ],
   },
@@ -107,12 +122,15 @@ export const streets: Street[] = [
       'Esta calle conecta el convento de San Agustín con la plaza principal. Ha sido escenario de importantes eventos históricos y conserva su trazado original.',
     latitude: 10.4238,
     longitude: -75.553,
+    imageBefore: require('@/assets/images/streets/street_3.jpg'),
+    imageAfter: require('@/assets/images/streets/street_1.jpg'),
     monuments: [
       {
         id: 'm6',
         name: 'Convento de San Agustín',
         description: 'Antiguo convento agustino del siglo XVI, hoy sede de la Universidad de Cartagena.',
         period: 'Siglo XVI',
+        image: require('@/assets/images/monuments/monument_2.jpg'),
       },
     ],
   },
@@ -125,12 +143,15 @@ export const streets: Street[] = [
       'La Calle de la Universidad debe su nombre a la Universidad de Cartagena, fundada en 1827. El edificio principal ocupa lo que fue el Convento de San Agustín.',
     latitude: 10.4242,
     longitude: -75.5535,
+    imageBefore: require('@/assets/images/streets/street_2.jpg'),
+    imageAfter: require('@/assets/images/streets/street_3.jpg'),
     monuments: [
       {
         id: 'm7',
         name: 'Universidad de Cartagena',
         description: 'Claustro principal de la Universidad, joya arquitectónica del siglo XVIII.',
         period: 'Siglo XVIII',
+        image: require('@/assets/images/monuments/monument_1.jpg'),
       },
     ],
   },
@@ -143,12 +164,15 @@ export const streets: Street[] = [
       'Esta calle fue el centro cultural de Cartagena durante el siglo XIX, cuando el Teatro Coliseo (hoy Teatro Heredia) era el epicentro de la vida artística.',
     latitude: 10.422,
     longitude: -75.5485,
+    imageBefore: require('@/assets/images/streets/street_1.jpg'),
+    imageAfter: require('@/assets/images/streets/street_3.jpg'),
     monuments: [
       {
         id: 'm8',
         name: 'Teatro Heredia',
         description: 'Teatro municipal, joya arquitectónica del neoclásico republicano.',
         period: 'Siglo XIX',
+        image: require('@/assets/images/monuments/monument_2.jpg'),
       },
     ],
   },
@@ -161,12 +185,15 @@ export const streets: Street[] = [
       'La Calle Larga debe su nombre a su extenso recorrido, que atraviesa gran parte del Centro Histórico. Fue una de las primeras calles trazadas en la ciudad amurallada.',
     latitude: 10.4215,
     longitude: -75.551,
+    imageBefore: require('@/assets/images/streets/street_3.jpg'),
+    imageAfter: require('@/assets/images/streets/street_2.jpg'),
     monuments: [
       {
         id: 'm9',
         name: 'Bóvedas de la Muralla',
         description: 'Conjunto de bóvedas construidas en la muralla que servían como almacenes.',
         period: 'Siglo XVIII',
+        image: require('@/assets/images/monuments/monument_1.jpg'),
       },
     ],
   },

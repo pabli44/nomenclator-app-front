@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { Image, Pressable, ScrollView, View } from 'react-native';
 
 import { ThemedText, ThemedView } from '../../shared';
 import { type Street } from '@/src/data/streets';
@@ -17,12 +17,11 @@ export function StreetView({ street }: StreetViewProps) {
     <ThemedView style={streetViewStyles.container}>
       <ScrollView contentContainerStyle={streetViewStyles.scrollContent}>
         <View style={streetViewStyles.imageContainer}>
-          <View style={streetViewStyles.imagePlaceholder}>
-            <Ionicons name="image" size={48} color="#9A8D7E" />
-            <ThemedText style={streetViewStyles.imagePlaceholderText}>
-              {showAfter ? 'Foto actual' : 'Foto histórica'}
-            </ThemedText>
-          </View>
+          <Image
+            source={showAfter ? street.imageAfter : street.imageBefore}
+            style={streetViewStyles.streetImage}
+            resizeMode="cover"
+          />
           <View style={streetViewStyles.imageOverlay}>
             <ThemedText style={streetViewStyles.imageLabel}>
               {showAfter ? 'AHORA' : 'ANTES'}
@@ -58,9 +57,13 @@ export function StreetView({ street }: StreetViewProps) {
             </ThemedText>
             {street.monuments.map((monument) => (
               <View key={monument.id} style={streetViewStyles.monumentCard}>
-                <View style={streetViewStyles.monumentImagePlaceholder}>
-                  <Ionicons name="business" size={28} color="#9A8D7E" />
-                </View>
+                {monument.image ? (
+                  <Image source={monument.image} style={streetViewStyles.monumentImage} resizeMode="cover" />
+                ) : (
+                  <View style={streetViewStyles.monumentImagePlaceholder}>
+                    <Ionicons name="business" size={28} color="#9A8D7E" />
+                  </View>
+                )}
                 <View style={streetViewStyles.monumentInfo}>
                   <ThemedText style={streetViewStyles.monumentName}>
                     {monument.name}
