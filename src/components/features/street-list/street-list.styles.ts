@@ -11,7 +11,17 @@ export const streetListStyles = StyleSheet.create({
     borderRadius: 10,
     padding: 12,
     marginBottom: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
     elevation: 2,
+  },
+  cardImage: {
+    width: 52,
+    height: 52,
+    borderRadius: 8,
+    marginRight: 12,
   },
   cardImagePlaceholder: {
     width: 52,

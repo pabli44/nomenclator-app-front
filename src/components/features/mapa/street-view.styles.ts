@@ -70,6 +70,7 @@ export const streetViewStyles = StyleSheet.create({
     color: '#3D2817',
     flex: 1,
     marginRight: 12,
+    lineHeight: 30,
   },
   periodBadge: {
     backgroundColor: '#C85A54',
@@ -161,6 +162,10 @@ export const streetViewStyles = StyleSheet.create({
     backgroundColor: '#8B7355',
     paddingVertical: 14,
     borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
     elevation: 2,
   },
   actionBtnSecondary: {
