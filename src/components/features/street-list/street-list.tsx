@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { FlatList, Pressable, View } from 'react-native';
+import { FlatList, Image, Pressable, View } from 'react-native';
 
 import { ThemedText, ThemedView } from '../../shared';
 import { streets } from '@/src/data/streets';
@@ -21,9 +21,13 @@ export function StreetListScreen() {
             style={streetListStyles.card}
             onPress={() => router.push(`/street/${item.id}` as any)}
           >
-            <View style={streetListStyles.cardImagePlaceholder}>
-              <Ionicons name="location" size={28} color="#9A8D7E" />
-            </View>
+            {item.imageBefore ? (
+              <Image source={item.imageBefore} style={streetListStyles.cardImage} resizeMode="cover" />
+            ) : (
+              <View style={streetListStyles.cardImagePlaceholder}>
+                <Ionicons name="location" size={28} color="#9A8D7E" />
+              </View>
+            )}
             <View style={streetListStyles.cardContent}>
               <ThemedText style={streetListStyles.cardName}>{item.name}</ThemedText>
               <View style={streetListStyles.cardPeriodRow}>

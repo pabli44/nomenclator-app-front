@@ -16,7 +16,7 @@ export const storeStyles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 8,
   },
-  headerTitle: { fontSize: 28, fontWeight: '800', color: '#3D2817' },
+  headerTitle: { fontSize: 28, fontWeight: '800', color: '#3D2817', lineHeight: 34 },
   headerSubtitle: { fontSize: 12, color: '#7D6B56', fontWeight: '600', marginTop: 2 },
 
   categoriesScroll: {
@@ -65,6 +65,10 @@ export const storeStyles = StyleSheet.create({
     backgroundColor: '#F4E8D8',
     borderRadius: 10,
     overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
     elevation: 2,
     minHeight: CARD_WIDTH * 1.5,
   },

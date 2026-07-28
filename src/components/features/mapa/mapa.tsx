@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useEffect, useState, useMemo } from 'react';
 import { FlatList, Pressable, TextInput, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
 
 import { MapView, Marker, Callout } from './MapViewWrapper';
@@ -12,6 +13,7 @@ import { mapaStyles } from './mapa.styles';
 
 export function Mapa() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const [searchQuery, setSearchQuery] = useState('');
   const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
 
@@ -45,7 +47,7 @@ export function Mapa() {
 
   return (
     <ThemedView style={mapaStyles.container}>
-      <View style={mapaStyles.headerContainer}>
+      <View style={[mapaStyles.headerContainer, { paddingTop: insets.top + 12 }]}>
         <CastleIcon size={50} color="#8B7355" />
         <ThemedText style={mapaStyles.mainTitle}>Cartagena</ThemedText>
         <ThemedText style={mapaStyles.subtitle}>• NOMENCLADOR •</ThemedText>
