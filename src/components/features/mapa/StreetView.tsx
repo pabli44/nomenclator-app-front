@@ -1,98 +1,92 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useState } from 'react';
-import { Image, Pressable, ScrollView, View } from 'react-native';
+import { ScrollView, Pressable, View, Image } from 'react-native';
 
-import { ThemedText, ThemedView } from '../../shared';
+import { ThemedText } from '../../shared';
 import { type Street } from '@/src/data/streets';
 import { streetViewStyles } from './street-view.styles';
+import { BeforeAfterSlider, ParchmentView, ParchmentCard, RibbonBadge, VintageButton } from '@/src/components/ui';
 
 interface StreetViewProps {
   street: Street;
 }
 
 export function StreetView({ street }: StreetViewProps) {
-  const [showAfter, setShowAfter] = useState(false);
+  const hasBothImages = !!street.imageBefore && !!street.imageAfter;
 
   return (
-    <ThemedView style={streetViewStyles.container}>
+    <ParchmentView>
       <ScrollView contentContainerStyle={streetViewStyles.scrollContent}>
-        <View style={streetViewStyles.imageContainer}>
-          <Image
-            source={showAfter ? street.imageAfter : street.imageBefore}
-            style={streetViewStyles.streetImage}
-            resizeMode="cover"
+        {/* Before/After Slider */}
+        {hasBothImages ? (
+          <BeforeAfterSlider
+            beforeImage={street.imageBefore!}
+            afterImage={street.imageAfter!}
+            containerHeight={320}
           />
-          <View style={streetViewStyles.imageOverlay}>
-            <ThemedText style={streetViewStyles.imageLabel}>
-              {showAfter ? 'AHORA' : 'ANTES'}
-            </ThemedText>
+        ) : street.imageBefore ? (
+          <View style={streetViewStyles.imageContainer}>
+            <Image
+              source={street.imageBefore}
+              style={streetViewStyles.streetImage}
+              resizeMode="cover"
+            />
           </View>
+        ) : null}
 
-          <Pressable
-            style={streetViewStyles.toggleBtn}
-            onPress={() => setShowAfter(!showAfter)}
-          >
-            <Ionicons name="swap-horizontal" size={20} color="white" />
-            <ThemedText style={streetViewStyles.toggleBtnText}>
-              {showAfter ? 'Ver antes' : 'Ver ahora'}
-            </ThemedText>
-          </Pressable>
-        </View>
-
+        {/* Info section */}
         <View style={streetViewStyles.infoSection}>
           <ThemedText style={streetViewStyles.streetName}>{street.name}</ThemedText>
-          <View style={streetViewStyles.periodBadge}>
-            <ThemedText style={streetViewStyles.periodText}>{street.period}</ThemedText>
-          </View>
+          <RibbonBadge label={street.period} />
         </View>
 
+        {/* History / Description card */}
         <View style={streetViewStyles.descriptionCard}>
           <ThemedText style={streetViewStyles.descriptionText}>{street.history}</ThemedText>
         </View>
 
+        {/* Monuments section */}
         {street.monuments.length > 0 && (
           <View style={streetViewStyles.monumentsSection}>
             <ThemedText style={streetViewStyles.sectionTitle}>
               Monumentos destacados
             </ThemedText>
             {street.monuments.map((monument) => (
-              <View key={monument.id} style={streetViewStyles.monumentCard}>
-                {monument.image ? (
-                  <Image source={monument.image} style={streetViewStyles.monumentImage} resizeMode="cover" />
-                ) : (
-                  <View style={streetViewStyles.monumentImagePlaceholder}>
-                    <Ionicons name="business" size={28} color="#9A8D7E" />
+              <ParchmentCard key={monument.id}>
+                <View style={streetViewStyles.monumentRow}>
+                  {monument.image ? (
+                    <Image source={monument.image} style={streetViewStyles.monumentImage} resizeMode="cover" />
+                  ) : (
+                    <View style={streetViewStyles.monumentImagePlaceholder}>
+                      <Ionicons name="business" size={28} color="#9A8D7E" />
+                    </View>
+                  )}
+                  <View style={streetViewStyles.monumentInfo}>
+                    <ThemedText style={streetViewStyles.monumentName}>
+                      {monument.name}
+                    </ThemedText>
+                    <RibbonBadge label={monument.period} />
+                    <ThemedText style={streetViewStyles.monumentDescription}>
+                      {monument.description}
+                    </ThemedText>
                   </View>
-                )}
-                <View style={streetViewStyles.monumentInfo}>
-                  <ThemedText style={streetViewStyles.monumentName}>
-                    {monument.name}
-                  </ThemedText>
-                  <ThemedText style={streetViewStyles.monumentPeriod}>
-                    {monument.period}
-                  </ThemedText>
-                  <ThemedText style={streetViewStyles.monumentDescription}>
-                    {monument.description}
-                  </ThemedText>
                 </View>
-              </View>
+              </ParchmentCard>
             ))}
           </View>
         )}
 
+        {/* Action buttons */}
         <View style={streetViewStyles.actionButtons}>
-          <Pressable style={streetViewStyles.actionBtn}>
+          <VintageButton onPress={() => {}} color="#8B7355" style={streetViewStyles.actionBtnFlex}>
             <Ionicons name="cart" size={18} color="white" />
-            <ThemedText style={streetViewStyles.actionBtnText}>Comprar imagen</ThemedText>
-          </Pressable>
-          <Pressable style={[streetViewStyles.actionBtn, streetViewStyles.actionBtnSecondary]}>
+            Comprar imagen
+          </VintageButton>
+          <VintageButton onPress={() => {}} color="#8B7355" variant="outline" style={streetViewStyles.actionBtnFlex}>
             <Ionicons name="heart-outline" size={18} color="#8B7355" />
-            <ThemedText style={[streetViewStyles.actionBtnText, { color: '#8B7355' }]}>
-              Guardar
-            </ThemedText>
-          </Pressable>
+            Guardar
+          </VintageButton>
         </View>
       </ScrollView>
-    </ThemedView>
+    </ParchmentView>
   );
 }

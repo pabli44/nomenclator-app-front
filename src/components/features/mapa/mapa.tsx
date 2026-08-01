@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useEffect, useState, useMemo } from 'react';
-import { FlatList, Pressable, TextInput, View } from 'react-native';
+import { FlatList, Pressable, TextInput, View, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
 
@@ -10,12 +10,16 @@ import { ThemedText, ThemedView } from '../../shared';
 import { CastleIcon } from '../castle';
 import { streets } from '@/src/data/streets';
 import { mapaStyles } from './mapa.styles';
+import { RibbonBadge, VintageButton, ParchmentCard } from '@/src/components/ui';
+
+import type { Street } from '@/src/data/streets';
 
 export function Mapa() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const [searchQuery, setSearchQuery] = useState('');
   const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [selectedStreet, setSelectedStreet] = useState<Street | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -42,7 +46,15 @@ export function Mapa() {
 
   const handleStreetPress = (id: string) => {
     setSearchQuery('');
+    setSelectedStreet(null);
     router.push(`/street/${id}` as any);
+  };
+
+  const handleMarkerSelect = (markerKey: string) => {
+    const index = parseInt(markerKey.replace('marker-', ''), 10);
+    if (index < streets.length) {
+      setSelectedStreet(streets[index]);
+    }
   };
 
   return (
@@ -91,29 +103,79 @@ export function Mapa() {
         </View>
       ) : null}
 
-      <MapView style={mapaStyles.mapView}>
-        {userLocation && (
-          <Marker
-            coordinate={userLocation}
-            isUserLocation
-          />
-        )}
-        {streets.map((street) => (
-          <Marker
-            key={street.id}
-            coordinate={{ latitude: street.latitude, longitude: street.longitude }}
-            title={street.name}
-            onCalloutPress={() => handleStreetPress(street.id)}
-          >
-            <Callout>
-              <View style={mapaStyles.calloutContainer}>
-                <ThemedText style={mapaStyles.calloutTitle}>{street.name}</ThemedText>
-                <ThemedText style={mapaStyles.calloutPeriod}>{street.period}</ThemedText>
+      <View style={mapaStyles.mapWrapper}>
+        <MapView
+          style={mapaStyles.mapView}
+          onMarkerSelect={handleMarkerSelect}
+        >
+          {userLocation && (
+            <Marker
+              coordinate={userLocation}
+              isUserLocation
+            />
+          )}
+          {streets.map((street) => (
+            <Marker
+              key={street.id}
+              coordinate={{ latitude: street.latitude, longitude: street.longitude }}
+              title={street.name}
+              onCalloutPress={() => handleStreetPress(street.id)}
+            >
+              <Callout>
+                <View style={mapaStyles.calloutContainer}>
+                  <ThemedText style={mapaStyles.calloutTitle}>{street.name}</ThemedText>
+                  <ThemedText style={mapaStyles.calloutPeriod}>{street.period}</ThemedText>
+                </View>
+              </Callout>
+            </Marker>
+          ))}
+        </MapView>
+
+        {/* Floating street card */}
+        {selectedStreet && (
+          <View style={mapaStyles.floatingCard}>
+            <ParchmentCard>
+              <View style={mapaStyles.floatingCardRow}>
+                {selectedStreet.imageBefore ? (
+                  <Image
+                    source={selectedStreet.imageBefore}
+                    style={mapaStyles.floatingCardImage}
+                    resizeMode="cover"
+                  />
+                ) : (
+                  <View style={mapaStyles.floatingCardImagePlaceholder}>
+                    <Ionicons name="image-outline" size={24} color="#9A8D7E" />
+                  </View>
+                )}
+                <View style={mapaStyles.floatingCardInfo}>
+                  <ThemedText style={mapaStyles.floatingCardName}>
+                    {selectedStreet.name}
+                  </ThemedText>
+                  <RibbonBadge label={selectedStreet.period} />
+                  <ThemedText style={mapaStyles.floatingCardDesc} numberOfLines={2}>
+                    {selectedStreet.description}
+                  </ThemedText>
+                </View>
               </View>
-            </Callout>
-          </Marker>
-        ))}
-      </MapView>
+              <View style={mapaStyles.floatingCardActions}>
+                <VintageButton
+                  onPress={() => handleStreetPress(selectedStreet.id)}
+                  color="#8B7355"
+                  style={mapaStyles.floatingCardBtn}
+                >
+                  Ver detalle
+                </VintageButton>
+                <Pressable
+                  onPress={() => setSelectedStreet(null)}
+                  style={mapaStyles.floatingCardClose}
+                >
+                  <Ionicons name="close-circle-outline" size={24} color="#7D6B56" />
+                </Pressable>
+              </View>
+            </ParchmentCard>
+          </View>
+        )}
+      </View>
 
       <View style={mapaStyles.quickActions}>
         <Pressable
