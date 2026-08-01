@@ -52,7 +52,7 @@ export const storeStyles = StyleSheet.create({
 
   productsGrid: {
     paddingHorizontal: H_PADDING,
-    paddingBottom: 40,
+    paddingBottom: 80, // space for cart bar
     flexGrow: 1,
   },
   productsRow: {
@@ -118,6 +118,43 @@ export const storeStyles = StyleSheet.create({
     color: 'white',
     fontSize: 12,
     fontWeight: '700',
+  },
+
+  /** Floating cart bar */
+  cartBar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#5A7A72',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 8,
+  },
+  cartBarText: {
+    color: 'white',
+    fontSize: 15,
+    fontWeight: '700',
+  },
+  cartBarButton: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  cartBarButtonText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: '800',
   },
 
   emptyContainer: {

@@ -97,6 +97,10 @@ export const mapaStyles = StyleSheet.create({
     marginTop: 1,
   },
 
+  mapWrapper: {
+    flex: 1,
+    position: 'relative',
+  },
   mapView: {
     flex: 1,
     marginHorizontal: 0,
@@ -116,6 +120,60 @@ export const mapaStyles = StyleSheet.create({
     color: '#C85A54',
     fontWeight: '600',
     marginTop: 2,
+  },
+
+  /** Floating street detail card */
+  floatingCard: {
+    position: 'absolute',
+    bottom: 12,
+    left: 12,
+    right: 12,
+    zIndex: 30,
+  },
+  floatingCardRow: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  floatingCardImage: {
+    width: 56,
+    height: 56,
+    borderRadius: 8,
+  },
+  floatingCardImagePlaceholder: {
+    width: 56,
+    height: 56,
+    borderRadius: 8,
+    backgroundColor: '#DFD4C4',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  floatingCardInfo: {
+    flex: 1,
+    justifyContent: 'center',
+    gap: 4,
+  },
+  floatingCardName: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#3D2817',
+  },
+  floatingCardDesc: {
+    fontSize: 11,
+    color: '#6B5D4F',
+    lineHeight: 15,
+  },
+  floatingCardActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+    gap: 10,
+  },
+  floatingCardBtn: {
+    flex: 1,
+    paddingVertical: 10,
+  },
+  floatingCardClose: {
+    padding: 4,
   },
 
   quickActions: {

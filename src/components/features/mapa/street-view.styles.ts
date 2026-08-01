@@ -13,48 +13,6 @@ export const streetViewStyles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  imagePlaceholder: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-  },
-  imagePlaceholderText: {
-    fontSize: 14,
-    color: '#9A8D7E',
-    fontWeight: '600',
-  },
-  imageOverlay: {
-    position: 'absolute',
-    top: 16,
-    left: 16,
-    backgroundColor: 'rgba(0,0,0,0.6)',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 6,
-  },
-  imageLabel: {
-    color: 'white',
-    fontSize: 13,
-    fontWeight: '800',
-    letterSpacing: 2,
-  },
-  toggleBtn: {
-    position: 'absolute',
-    bottom: 16,
-    right: 16,
-    backgroundColor: 'rgba(0,0,0,0.6)',
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 8,
-  },
-  toggleBtnText: {
-    color: 'white',
-    fontSize: 12,
-    fontWeight: '700',
-  },
 
   infoSection: {
     flexDirection: 'row',
@@ -107,6 +65,9 @@ export const streetViewStyles = StyleSheet.create({
     color: '#3D2817',
     marginBottom: 12,
   },
+  monumentRow: {
+    flexDirection: 'row',
+  },
   monumentCard: {
     flexDirection: 'row',
     backgroundColor: '#F4E8D8',
@@ -129,7 +90,7 @@ export const streetViewStyles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 12,
   },
-  monumentInfo: { flex: 1, justifyContent: 'center' },
+  monumentInfo: { flex: 1, justifyContent: 'center', gap: 4 },
   monumentName: {
     fontSize: 14,
     fontWeight: '700',
@@ -177,5 +138,8 @@ export const streetViewStyles = StyleSheet.create({
     color: 'white',
     fontSize: 14,
     fontWeight: '700',
+  },
+  actionBtnFlex: {
+    flex: 1,
   },
 });
