@@ -1,12 +1,13 @@
 import { StyleSheet } from 'react-native';
 
+import { VINTAGE_COLORS, VINTAGE_FONTS, VINTAGE_RADIUS } from '@/src/constants/vintage';
+
 export const streetViewStyles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#E8DFD5' },
   scrollContent: { paddingBottom: 32 },
 
   imageContainer: {
     height: 280,
-    backgroundColor: '#DFD4C4',
+    backgroundColor: VINTAGE_COLORS.placeholder,
     position: 'relative',
   },
   streetImage: {
@@ -25,33 +26,23 @@ export const streetViewStyles = StyleSheet.create({
   streetName: {
     fontSize: 24,
     fontWeight: '800',
-    color: '#3D2817',
+    color: VINTAGE_COLORS.textPrimary,
     flex: 1,
     marginRight: 12,
     lineHeight: 30,
-  },
-  periodBadge: {
-    backgroundColor: '#C85A54',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 6,
-  },
-  periodText: {
-    color: 'white',
-    fontSize: 12,
-    fontWeight: '700',
+    fontFamily: VINTAGE_FONTS.serif,
   },
 
   descriptionCard: {
     marginHorizontal: 20,
-    backgroundColor: '#F4E8D8',
-    borderRadius: 10,
+    backgroundColor: VINTAGE_COLORS.card,
+    borderRadius: VINTAGE_RADIUS.card,
     padding: 16,
     marginBottom: 20,
   },
   descriptionText: {
     fontSize: 14,
-    color: '#5D4B38',
+    color: VINTAGE_COLORS.textSecondary,
     lineHeight: 22,
   },
 
@@ -62,18 +53,12 @@ export const streetViewStyles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#3D2817',
+    color: VINTAGE_COLORS.textPrimary,
     marginBottom: 12,
+    fontFamily: VINTAGE_FONTS.serif,
   },
   monumentRow: {
     flexDirection: 'row',
-  },
-  monumentCard: {
-    flexDirection: 'row',
-    backgroundColor: '#F4E8D8',
-    borderRadius: 10,
-    padding: 12,
-    marginBottom: 10,
   },
   monumentImage: {
     width: 56,
@@ -85,7 +70,7 @@ export const streetViewStyles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 8,
-    backgroundColor: '#DFD4C4',
+    backgroundColor: VINTAGE_COLORS.placeholder,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -94,18 +79,12 @@ export const streetViewStyles = StyleSheet.create({
   monumentName: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#3D2817',
+    color: VINTAGE_COLORS.textPrimary,
     marginBottom: 2,
-  },
-  monumentPeriod: {
-    fontSize: 11,
-    color: '#C85A54',
-    fontWeight: '700',
-    marginBottom: 4,
   },
   monumentDescription: {
     fontSize: 12,
-    color: '#6B5D4F',
+    color: VINTAGE_COLORS.textDescription,
     lineHeight: 16,
   },
 
@@ -114,32 +93,8 @@ export const streetViewStyles = StyleSheet.create({
     paddingHorizontal: 20,
     gap: 12,
   },
-  actionBtn: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    backgroundColor: '#8B7355',
-    paddingVertical: 14,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.15,
-    shadowRadius: 3,
-    elevation: 2,
-  },
-  actionBtnSecondary: {
-    backgroundColor: '#F4E8D8',
-    borderWidth: 1.5,
-    borderColor: '#8B7355',
-  },
-  actionBtnText: {
-    color: 'white',
-    fontSize: 14,
-    fontWeight: '700',
-  },
   actionBtnFlex: {
     flex: 1,
+    minHeight: 44,
   },
 });

@@ -3,6 +3,8 @@ import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { VINTAGE_COLORS } from '@/src/constants/vintage';
+
 type TabConfig = {
   key: string;
   label: string;
@@ -11,10 +13,10 @@ type TabConfig = {
 };
 
 const TABS: TabConfig[] = [
-  { key: 'index', label: 'Explorar', icon: 'compass-outline', color: '#5A7A72' },
-  { key: 'coleccion', label: 'Colección', icon: 'bookmark-outline', color: '#C85A54' },
-  { key: 'tienda', label: 'Tienda', icon: 'storefront-outline', color: '#8B7355' },
-  { key: 'perfil', label: 'Perfil', icon: 'person-outline', color: '#4A7B9D' },
+  { key: 'index', label: 'Explorar', icon: 'compass-outline', color: VINTAGE_COLORS.teal },
+  { key: 'coleccion', label: 'Colección', icon: 'bookmark-outline', color: VINTAGE_COLORS.accent },
+  { key: 'tienda', label: 'Tienda', icon: 'storefront-outline', color: VINTAGE_COLORS.brown },
+  { key: 'perfil', label: 'Perfil', icon: 'person-outline', color: VINTAGE_COLORS.blue },
 ];
 
 export function VintageTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
@@ -58,8 +60,8 @@ export function VintageTabBar({ state, descriptors, navigation }: BottomTabBarPr
               style={({ pressed }) => [
                 styles.tab,
                 {
-                  backgroundColor: isFocused ? tab.color : '#F4E8D8',
-                  borderColor: isFocused ? tab.color : '#D9CCC0',
+                  backgroundColor: isFocused ? tab.color : VINTAGE_COLORS.card,
+                  borderColor: isFocused ? tab.color : VINTAGE_COLORS.cardBorder,
                   opacity: pressed ? 0.85 : 1,
                 },
               ]}
@@ -67,12 +69,12 @@ export function VintageTabBar({ state, descriptors, navigation }: BottomTabBarPr
               <Ionicons
                 name={isFocused ? (tab.icon.replace('-outline', '') as keyof typeof Ionicons.glyphMap) : tab.icon}
                 size={22}
-                color={isFocused ? '#FFFFFF' : tab.color}
+                color={isFocused ? VINTAGE_COLORS.white : tab.color}
               />
               <Text
                 style={[
                   styles.label,
-                  { color: isFocused ? '#FFFFFF' : tab.color },
+                  { color: isFocused ? VINTAGE_COLORS.white : tab.color },
                 ]}
               >
                 {tab.label}
@@ -87,9 +89,9 @@ export function VintageTabBar({ state, descriptors, navigation }: BottomTabBarPr
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#E8DFD5',
+    backgroundColor: VINTAGE_COLORS.parchment,
     borderTopWidth: 2,
-    borderTopColor: '#D9CCC0',
+    borderTopColor: VINTAGE_COLORS.cardBorder,
     paddingTop: 8,
     paddingHorizontal: 12,
   },

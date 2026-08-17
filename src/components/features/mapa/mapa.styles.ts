@@ -1,9 +1,11 @@
 import { StyleSheet } from 'react-native';
 
+import { VINTAGE_COLORS, VINTAGE_FONTS, VINTAGE_RADIUS } from '@/src/constants/vintage';
+
 export const mapaStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E8DFD5',
+    backgroundColor: VINTAGE_COLORS.parchment,
   },
 
   headerContainer: {
@@ -19,18 +21,20 @@ export const mapaStyles = StyleSheet.create({
     fontSize: 32,
     fontWeight: '800',
     letterSpacing: 4,
-    color: '#5D4B38',
+    color: VINTAGE_COLORS.textSecondary,
     lineHeight: 36,
+    fontFamily: VINTAGE_FONTS.serif,
   },
   subtitle: {
     fontSize: 10,
     letterSpacing: 3,
-    color: '#7D6B56',
+    color: VINTAGE_COLORS.textMuted,
     fontWeight: '600',
     lineHeight: 12,
     position: 'absolute',
     bottom: 4,
     right: 16,
+    fontFamily: VINTAGE_FONTS.serif,
   },
 
   searchContainer: {
@@ -41,16 +45,17 @@ export const mapaStyles = StyleSheet.create({
     marginTop: 4,
     marginHorizontal: 16,
     marginBottom: 10,
-    borderRadius: 10,
-    backgroundColor: '#F5F0EA',
+    minHeight: 44,
+    borderRadius: VINTAGE_RADIUS.card,
+    backgroundColor: VINTAGE_COLORS.parchmentLight,
     borderWidth: 1,
-    borderColor: '#D9CCC0',
+    borderColor: VINTAGE_COLORS.cardBorder,
   },
   searchIcon: { marginRight: 10 },
   searchInput: {
     flex: 1,
     fontSize: 14,
-    color: '#5D4B38',
+    color: VINTAGE_COLORS.textSecondary,
   },
 
   searchResultsContainer: {
@@ -59,19 +64,19 @@ export const mapaStyles = StyleSheet.create({
     left: 16,
     right: 16,
     zIndex: 10,
-    backgroundColor: '#F5F0EA',
-    borderRadius: 10,
+    backgroundColor: VINTAGE_COLORS.parchmentLight,
+    borderRadius: VINTAGE_RADIUS.card,
     borderWidth: 1,
-    borderColor: '#D9CCC0',
+    borderColor: VINTAGE_COLORS.cardBorder,
     maxHeight: 200,
-    shadowColor: '#000',
+    shadowColor: VINTAGE_COLORS.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 6,
   },
   searchResultsList: {
-    borderRadius: 10,
+    borderRadius: VINTAGE_RADIUS.card,
   },
   searchResultItem: {
     flexDirection: 'row',
@@ -79,7 +84,7 @@ export const mapaStyles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#E8DFD5',
+    borderBottomColor: VINTAGE_COLORS.parchment,
   },
   searchResultText: {
     marginLeft: 10,
@@ -88,11 +93,11 @@ export const mapaStyles = StyleSheet.create({
   searchResultName: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#3D2817',
+    color: VINTAGE_COLORS.textPrimary,
   },
   searchResultPeriod: {
     fontSize: 11,
-    color: '#C85A54',
+    color: VINTAGE_COLORS.accent,
     fontWeight: '600',
     marginTop: 1,
   },
@@ -106,20 +111,25 @@ export const mapaStyles = StyleSheet.create({
     marginHorizontal: 0,
   },
 
-  calloutContainer: {
-    padding: 6,
-    minWidth: 120,
+  locationNotice: {
+    position: 'absolute',
+    top: 12,
+    alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: VINTAGE_COLORS.card,
+    borderWidth: 1,
+    borderColor: VINTAGE_COLORS.cardBorder,
+    borderRadius: VINTAGE_RADIUS.badge,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    zIndex: 40,
   },
-  calloutTitle: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#3D2817',
-  },
-  calloutPeriod: {
-    fontSize: 11,
-    color: '#C85A54',
+  locationNoticeText: {
+    fontSize: 12,
     fontWeight: '600',
-    marginTop: 2,
+    color: VINTAGE_COLORS.textMuted,
   },
 
   /** Floating street detail card */
@@ -143,7 +153,7 @@ export const mapaStyles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 8,
-    backgroundColor: '#DFD4C4',
+    backgroundColor: VINTAGE_COLORS.placeholder,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -155,11 +165,11 @@ export const mapaStyles = StyleSheet.create({
   floatingCardName: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#3D2817',
+    color: VINTAGE_COLORS.textPrimary,
   },
   floatingCardDesc: {
     fontSize: 11,
-    color: '#6B5D4F',
+    color: VINTAGE_COLORS.textDescription,
     lineHeight: 15,
   },
   floatingCardActions: {
@@ -171,6 +181,7 @@ export const mapaStyles = StyleSheet.create({
   floatingCardBtn: {
     flex: 1,
     paddingVertical: 10,
+    minHeight: 44,
   },
   floatingCardClose: {
     padding: 4,
@@ -181,7 +192,7 @@ export const mapaStyles = StyleSheet.create({
     justifyContent: 'space-evenly',
     paddingVertical: 14,
     paddingHorizontal: 16,
-    backgroundColor: '#E8DFD5',
+    backgroundColor: VINTAGE_COLORS.parchment,
     gap: 12,
   },
   quickActionBtn: {
@@ -191,13 +202,14 @@ export const mapaStyles = StyleSheet.create({
     gap: 8,
     paddingVertical: 12,
     paddingHorizontal: 24,
-    borderRadius: 10,
-    shadowColor: '#000',
+    borderRadius: VINTAGE_RADIUS.card,
+    shadowColor: VINTAGE_COLORS.shadow,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.22,
     shadowRadius: 3,
     elevation: 3,
     flex: 1,
+    minHeight: 44,
   },
   quickActionLabel: {
     fontSize: 14,

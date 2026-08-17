@@ -79,14 +79,14 @@ function CompassRose() {
             backgroundColor: 'rgba(245, 240, 234, 0.8)',
           }}
         >
-          <Text style={{ position: 'absolute', top: 2, fontSize: 11, fontWeight: '900', color: '#C85A54' }}>
+          <Text style={{ position: 'absolute', top: 2, fontSize: 11, fontWeight: '900', color: VINTAGE_COLORS.accent }}>
             N
           </Text>
           <View
             style={{
               width: 10,
               height: 10,
-              backgroundColor: '#8B7355',
+              backgroundColor: VINTAGE_COLORS.brown,
               transform: [{ rotate: '45deg' }],
               opacity: 0.6,
             }}
@@ -106,7 +106,7 @@ function ShieldMarker() {
           style={{
             width: 28,
             height: 20,
-            backgroundColor: '#C85A54',
+            backgroundColor: VINTAGE_COLORS.accent,
             borderTopLeftRadius: 6,
             borderTopRightRadius: 6,
             borderWidth: 2,
@@ -126,7 +126,7 @@ function ShieldMarker() {
             borderTopWidth: 8,
             borderLeftColor: 'transparent',
             borderRightColor: 'transparent',
-            borderTopColor: '#C85A54',
+            borderTopColor: VINTAGE_COLORS.accent,
           }}
         />
       </View>
@@ -183,7 +183,7 @@ function UserPin() {
             width: 24,
             height: 24,
             borderRadius: 12,
-            backgroundColor: '#3B82F6',
+            backgroundColor: VINTAGE_COLORS.teal,
             borderWidth: 3,
             borderColor: 'white',
             alignItems: 'center',
@@ -200,7 +200,7 @@ function UserPin() {
             borderTopWidth: 10,
             borderLeftColor: 'transparent',
             borderRightColor: 'transparent',
-            borderTopColor: '#3B82F6',
+            borderTopColor: VINTAGE_COLORS.teal,
             marginTop: -2,
           }}
         />
@@ -210,7 +210,7 @@ function UserPin() {
           marginTop: 2,
           fontSize: 9,
           fontWeight: '700',
-          color: '#3B82F6',
+          color: VINTAGE_COLORS.teal,
           backgroundColor: 'rgba(255,255,255,0.85)',
           paddingHorizontal: 6,
           paddingVertical: 2,
@@ -236,12 +236,23 @@ const MapView = ({ style, children, onMarkerSelect }: MapViewProps) => {
     (child) => isValidElement(child) && child.type === Marker,
   );
 
+  // Index of each marker among the street markers only (user pin excluded),
+  // so `onMarkerSelect` receives the correct street index even when the
+  // user pin is present in the markers array.
+  let streetCounter = 0;
+  const streetIndexes = markers.map((m: any) => {
+    if (m.props.isUserLocation) return -1;
+    const idx = streetCounter;
+    streetCounter += 1;
+    return idx;
+  });
+
   return (
     <View
       style={[
         {
           flex: 1,
-          backgroundColor: '#C8D8E0',
+          backgroundColor: VINTAGE_COLORS.mapSea,
           position: 'relative',
           overflow: 'hidden',
         },
@@ -249,7 +260,7 @@ const MapView = ({ style, children, onMarkerSelect }: MapViewProps) => {
       ]}
     >
       {/* Sea/water border */}
-      <View style={[ABSOLUTE_FILL, { backgroundColor: '#C8D8E0' }]} />
+      <View style={[ABSOLUTE_FILL, { backgroundColor: VINTAGE_COLORS.mapSea }]} />
 
       {/* Land mass */}
       <View
@@ -320,21 +331,17 @@ const MapView = ({ style, children, onMarkerSelect }: MapViewProps) => {
 
         {/* Markers */}
         {markers.map((marker: any, index) => {
-          const { coordinate, onCalloutPress, isUserLocation } = marker.props;
+          const { coordinate, isUserLocation } = marker.props;
           const pos = coordToPercent(coordinate.latitude, coordinate.longitude, !!isUserLocation);
 
           const handlePress = () => {
             if (isUserLocation) return;
-            // Get the street id from the marker's key/position
-            const streetIndex = markers.findIndex(
-              (m: any) =>
-                m.props.coordinate.latitude === coordinate.latitude &&
-                m.props.coordinate.longitude === coordinate.longitude &&
-                !m.props.isUserLocation,
-            );
-            // Tell parent which street was selected
-            onMarkerSelect?.(`marker-${index}`);
-            onCalloutPress?.();
+            // Map the marker position to its index among street markers only
+            // (the user pin is also part of `markers`, so an absolute index would be off by one).
+            const streetIndex = streetIndexes[index];
+            if (streetIndex >= 0) {
+              onMarkerSelect?.(`marker-${streetIndex}`);
+            }
           };
 
           return (
@@ -385,7 +392,7 @@ function MarkerContent({ pos, title, onPress, children, isUserLocation }: Marker
         <UserPin />
       ) : (
         <>
-          <Pressable onPress={handlePress}>
+          <Pressable onPress={handlePress} hitSlop={10}>
             <ShieldMarker />
           </Pressable>
           {showCallout && title && (

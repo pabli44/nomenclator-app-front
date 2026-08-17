@@ -1,12 +1,14 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
+import { VINTAGE_COLORS } from '@/src/constants/vintage';
+
 interface CastleIconProps {
   size?: number;
   color?: string;
 }
 
-export function CastleIcon({ size = 60, color = '#8B7355' }: CastleIconProps) {
+export function CastleIcon({ size = 60, color = VINTAGE_COLORS.brown }: CastleIconProps) {
   const styles = StyleSheet.create({
     container: {
       width: size,

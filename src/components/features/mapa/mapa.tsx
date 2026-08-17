@@ -1,18 +1,21 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useEffect, useState, useMemo } from 'react';
-import { FlatList, Pressable, TextInput, View, Image } from 'react-native';
+import { FlatList, Pressable, TextInput, View, Image, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
 
-import { MapView, Marker, Callout } from './MapViewWrapper';
+import { MapView, Marker } from './MapViewWrapper';
 import { ThemedText, ThemedView } from '../../shared';
 import { CastleIcon } from '../castle';
 import { streets } from '@/src/data/streets';
 import { mapaStyles } from './mapa.styles';
 import { RibbonBadge, VintageButton, ParchmentCard } from '@/src/components/ui';
+import { VINTAGE_COLORS } from '@/src/constants/vintage';
 
 import type { Street } from '@/src/data/streets';
+
+type LocationStatus = 'idle' | 'granted' | 'denied' | 'error';
 
 export function Mapa() {
   const router = useRouter();
@@ -20,18 +23,35 @@ export function Mapa() {
   const [searchQuery, setSearchQuery] = useState('');
   const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const [selectedStreet, setSelectedStreet] = useState<Street | null>(null);
+  const [locationStatus, setLocationStatus] = useState<LocationStatus>('idle');
 
   useEffect(() => {
-    (async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') return;
+    let cancelled = false;
 
-      const loc = await Location.getCurrentPositionAsync({});
-      setUserLocation({
-        latitude: loc.coords.latitude,
-        longitude: loc.coords.longitude,
-      });
+    (async () => {
+      try {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (cancelled) return;
+        if (status !== 'granted') {
+          setLocationStatus('denied');
+          return;
+        }
+
+        const loc = await Location.getCurrentPositionAsync({});
+        if (cancelled) return;
+        setUserLocation({
+          latitude: loc.coords.latitude,
+          longitude: loc.coords.longitude,
+        });
+        setLocationStatus('granted');
+      } catch {
+        if (!cancelled) setLocationStatus('error');
+      }
     })();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const filteredStreets = useMemo(
@@ -60,7 +80,7 @@ export function Mapa() {
   return (
     <ThemedView style={mapaStyles.container}>
       <View style={[mapaStyles.headerContainer, { paddingTop: insets.top + 12 }]}>
-        <CastleIcon size={50} color="#8B7355" />
+        <CastleIcon size={50} color={VINTAGE_COLORS.brown} />
         <ThemedText style={mapaStyles.mainTitle}>Cartagena</ThemedText>
         <ThemedText style={mapaStyles.subtitle}>• NOMENCLADOR •</ThemedText>
       </View>
@@ -75,7 +95,10 @@ export function Mapa() {
           onChangeText={setSearchQuery}
         />
         {searchQuery ? (
-          <Pressable onPress={() => setSearchQuery('')}>
+          <Pressable
+            onPress={() => setSearchQuery('')}
+            hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+          >
             <Ionicons name="close-circle" size={20} color="#8B8680" />
           </Pressable>
         ) : null}
@@ -91,7 +114,7 @@ export function Mapa() {
                 style={mapaStyles.searchResultItem}
                 onPress={() => handleStreetPress(item.id)}
               >
-                <Ionicons name="location-outline" size={18} color="#8B7355" />
+                <Ionicons name="location-outline" size={18} color={VINTAGE_COLORS.brown} />
                 <View style={mapaStyles.searchResultText}>
                   <ThemedText style={mapaStyles.searchResultName}>{item.name}</ThemedText>
                   <ThemedText style={mapaStyles.searchResultPeriod}>{item.period}</ThemedText>
@@ -119,17 +142,18 @@ export function Mapa() {
               key={street.id}
               coordinate={{ latitude: street.latitude, longitude: street.longitude }}
               title={street.name}
-              onCalloutPress={() => handleStreetPress(street.id)}
-            >
-              <Callout>
-                <View style={mapaStyles.calloutContainer}>
-                  <ThemedText style={mapaStyles.calloutTitle}>{street.name}</ThemedText>
-                  <ThemedText style={mapaStyles.calloutPeriod}>{street.period}</ThemedText>
-                </View>
-              </Callout>
-            </Marker>
+            />
           ))}
         </MapView>
+
+        {locationStatus === 'denied' || locationStatus === 'error' ? (
+          <View style={mapaStyles.locationNotice}>
+            <Ionicons name="location-outline" size={14} color={VINTAGE_COLORS.textMuted} />
+            <Text style={mapaStyles.locationNoticeText}>
+              Ubicación no disponible — explora el mapa
+            </Text>
+          </View>
+        ) : null}
 
         {/* Floating street card */}
         {selectedStreet && (
@@ -144,7 +168,7 @@ export function Mapa() {
                   />
                 ) : (
                   <View style={mapaStyles.floatingCardImagePlaceholder}>
-                    <Ionicons name="image-outline" size={24} color="#9A8D7E" />
+                    <Ionicons name="image-outline" size={24} color={VINTAGE_COLORS.placeholderText} />
                   </View>
                 )}
                 <View style={mapaStyles.floatingCardInfo}>
@@ -160,7 +184,7 @@ export function Mapa() {
               <View style={mapaStyles.floatingCardActions}>
                 <VintageButton
                   onPress={() => handleStreetPress(selectedStreet.id)}
-                  color="#8B7355"
+                  color={VINTAGE_COLORS.brown}
                   style={mapaStyles.floatingCardBtn}
                 >
                   Ver detalle
@@ -168,8 +192,9 @@ export function Mapa() {
                 <Pressable
                   onPress={() => setSelectedStreet(null)}
                   style={mapaStyles.floatingCardClose}
+                  hitSlop={12}
                 >
-                  <Ionicons name="close-circle-outline" size={24} color="#7D6B56" />
+                  <Ionicons name="close-circle-outline" size={24} color={VINTAGE_COLORS.textMuted} />
                 </Pressable>
               </View>
             </ParchmentCard>
@@ -179,14 +204,14 @@ export function Mapa() {
 
       <View style={mapaStyles.quickActions}>
         <Pressable
-          style={[mapaStyles.quickActionBtn, { backgroundColor: '#5A7A72' }]}
+          style={[mapaStyles.quickActionBtn, { backgroundColor: VINTAGE_COLORS.teal }]}
           onPress={() => router.push('/calles' as any)}
         >
           <Ionicons name="leaf" size={22} color="white" />
           <ThemedText style={mapaStyles.quickActionLabel}>Explorar</ThemedText>
         </Pressable>
         <Pressable
-          style={[mapaStyles.quickActionBtn, { backgroundColor: '#8B7355' }]}
+          style={[mapaStyles.quickActionBtn, { backgroundColor: VINTAGE_COLORS.brown }]}
           onPress={() => router.push('/(tabs)/tienda' as any)}
         >
           <Ionicons name="pricetag" size={22} color="white" />
