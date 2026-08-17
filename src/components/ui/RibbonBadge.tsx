@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { VINTAGE_COLORS, VINTAGE_RADIUS } from '@/src/constants/vintage';
+import { VINTAGE_COLORS, VINTAGE_FONTS, VINTAGE_RADIUS } from '@/src/constants/vintage';
 
 type RibbonBadgeProps = {
   label: string;
@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: '800',
     letterSpacing: 1,
+    fontFamily: VINTAGE_FONTS.serif,
   },
   tail: {
     width: 0,

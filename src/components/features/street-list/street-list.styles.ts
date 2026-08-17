@@ -1,17 +1,19 @@
 import { StyleSheet } from 'react-native';
 
+import { VINTAGE_COLORS, VINTAGE_RADIUS } from '@/src/constants/vintage';
+
 export const streetListStyles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#E8DFD5' },
+  container: { flex: 1, backgroundColor: VINTAGE_COLORS.parchment },
   listContent: { padding: 16, paddingBottom: 32 },
 
   card: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F4E8D8',
-    borderRadius: 10,
+    backgroundColor: VINTAGE_COLORS.card,
+    borderRadius: VINTAGE_RADIUS.card,
     padding: 12,
     marginBottom: 10,
-    shadowColor: '#000',
+    shadowColor: VINTAGE_COLORS.shadow,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.15,
     shadowRadius: 3,
@@ -27,7 +29,7 @@ export const streetListStyles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: 8,
-    backgroundColor: '#DFD4C4',
+    backgroundColor: VINTAGE_COLORS.placeholder,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -36,7 +38,7 @@ export const streetListStyles = StyleSheet.create({
   cardName: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#3D2817',
+    color: VINTAGE_COLORS.textPrimary,
     marginBottom: 4,
   },
   cardPeriodRow: {
@@ -46,24 +48,24 @@ export const streetListStyles = StyleSheet.create({
     marginBottom: 4,
   },
   periodBadge: {
-    backgroundColor: '#C85A54',
+    backgroundColor: VINTAGE_COLORS.accent,
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 4,
   },
   periodText: {
-    color: 'white',
+    color: VINTAGE_COLORS.white,
     fontSize: 10,
     fontWeight: '700',
   },
   monumentCount: {
     fontSize: 11,
-    color: '#7D6B56',
+    color: VINTAGE_COLORS.textMuted,
     fontWeight: '600',
   },
   cardDescription: {
     fontSize: 12,
-    color: '#6B5D4F',
+    color: VINTAGE_COLORS.textDescription,
     lineHeight: 16,
   },
 });

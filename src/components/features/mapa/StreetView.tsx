@@ -1,10 +1,12 @@
 import { Ionicons } from '@expo/vector-icons';
-import { ScrollView, Pressable, View, Image } from 'react-native';
+import { useState } from 'react';
+import { Alert, ScrollView, View, Image } from 'react-native';
 
 import { ThemedText } from '../../shared';
 import { type Street } from '@/src/data/streets';
 import { streetViewStyles } from './street-view.styles';
 import { BeforeAfterSlider, ParchmentView, ParchmentCard, RibbonBadge, VintageButton } from '@/src/components/ui';
+import { VINTAGE_COLORS } from '@/src/constants/vintage';
 
 interface StreetViewProps {
   street: Street;
@@ -12,6 +14,16 @@ interface StreetViewProps {
 
 export function StreetView({ street }: StreetViewProps) {
   const hasBothImages = !!street.imageBefore && !!street.imageAfter;
+  const [saved, setSaved] = useState(false);
+
+  const toggleSave = () => setSaved((value) => !value);
+
+  const handleBuyImage = () => {
+    Alert.alert(
+      'Imagen agregada al carrito',
+      'La imagen se agregó a tu carrito de la tienda. Podés completar la compra desde la sección Tienda.',
+    );
+  };
 
   return (
     <ParchmentView>
@@ -57,7 +69,7 @@ export function StreetView({ street }: StreetViewProps) {
                     <Image source={monument.image} style={streetViewStyles.monumentImage} resizeMode="cover" />
                   ) : (
                     <View style={streetViewStyles.monumentImagePlaceholder}>
-                      <Ionicons name="business" size={28} color="#9A8D7E" />
+                      <Ionicons name="business" size={28} color={VINTAGE_COLORS.placeholderText} />
                     </View>
                   )}
                   <View style={streetViewStyles.monumentInfo}>
@@ -77,13 +89,26 @@ export function StreetView({ street }: StreetViewProps) {
 
         {/* Action buttons */}
         <View style={streetViewStyles.actionButtons}>
-          <VintageButton onPress={() => {}} color="#8B7355" style={streetViewStyles.actionBtnFlex}>
-            <Ionicons name="cart" size={18} color="white" />
+          <VintageButton
+            onPress={handleBuyImage}
+            color={VINTAGE_COLORS.brown}
+            style={streetViewStyles.actionBtnFlex}
+          >
+            <Ionicons name="cart" size={18} color={VINTAGE_COLORS.white} />
             Comprar imagen
           </VintageButton>
-          <VintageButton onPress={() => {}} color="#8B7355" variant="outline" style={streetViewStyles.actionBtnFlex}>
-            <Ionicons name="heart-outline" size={18} color="#8B7355" />
-            Guardar
+          <VintageButton
+            onPress={toggleSave}
+            color={saved ? VINTAGE_COLORS.accent : VINTAGE_COLORS.brown}
+            variant={saved ? 'solid' : 'outline'}
+            style={streetViewStyles.actionBtnFlex}
+          >
+            <Ionicons
+              name={saved ? 'heart' : 'heart-outline'}
+              size={18}
+              color={saved ? VINTAGE_COLORS.white : VINTAGE_COLORS.brown}
+            />
+            {saved ? '✓ Guardado' : 'Guardar'}
           </VintageButton>
         </View>
       </ScrollView>

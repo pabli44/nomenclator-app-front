@@ -1,26 +1,39 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
-import { useColorScheme } from '@/src/hooks/use-color-scheme';
+import { VINTAGE_COLORS } from '@/src/constants/vintage';
+import { CartProvider } from '@/src/state/cart-context';
 
 export const unstable_settings = {
   anchor: '(tabs)',
 };
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
+const NavTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: VINTAGE_COLORS.brown,
+    background: VINTAGE_COLORS.parchment,
+    card: VINTAGE_COLORS.parchment,
+    text: VINTAGE_COLORS.textPrimary,
+    border: VINTAGE_COLORS.cardBorder,
+  },
+};
 
+export default function RootLayout() {
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="street/[id]" options={{ title: 'Detalle', headerBackTitle: 'Volver' }} />
-        <Stack.Screen name="calles" options={{ title: 'Explorar calles', headerBackTitle: 'Volver' }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
+    <ThemeProvider value={NavTheme}>
+      <CartProvider>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="street/[id]" options={{ title: 'Detalle', headerBackTitle: 'Volver' }} />
+          <Stack.Screen name="calles" options={{ title: 'Explorar calles', headerBackTitle: 'Volver' }} />
+          <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Carrito' }} />
+        </Stack>
+        <StatusBar style="dark" />
+      </CartProvider>
     </ThemeProvider>
   );
 }

@@ -19,16 +19,18 @@ export const VINTAGE_COLORS = {
   /** Text hierarchy */
   textPrimary: '#3D2817',
   textSecondary: '#5D4B38',
-  textMuted: '#7D6B56',
+  textMuted: '#6B5A47',
   textDescription: '#6B5D4F',
   /** Tab/Accent colors */
   tabExplorar: '#5A7A72',
-  tabColeccion: '#C85A54',
-  tabTienda: '#8B7355',
+  tabColeccion: '#A93F39',
+  tabTienda: '#7A6449',
   tabPerfil: '#4A7B9D',
+  /** Illustrated map */
+  mapSea: '#CBD6D3',
   /** Functional */
-  accent: '#C85A54',
-  brown: '#8B7355',
+  accent: '#A93F39',
+  brown: '#7A6449',
   teal: '#5A7A72',
   blue: '#4A7B9D',
   gold: '#C4A35A',

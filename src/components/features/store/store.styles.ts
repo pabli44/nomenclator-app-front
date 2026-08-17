@@ -1,12 +1,14 @@
 import { Dimensions, StyleSheet } from 'react-native';
 
+import { VINTAGE_COLORS, VINTAGE_FONTS, VINTAGE_RADIUS } from '@/src/constants/vintage';
+
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CARD_GAP = 12;
 const H_PADDING = 16;
 const CARD_WIDTH = (SCREEN_WIDTH - H_PADDING * 2 - CARD_GAP) / 2;
 
 export const storeStyles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#E8DFD5' },
+  container: { flex: 1, backgroundColor: VINTAGE_COLORS.parchment },
 
   header: {
     flexDirection: 'row',
@@ -16,38 +18,64 @@ export const storeStyles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 8,
   },
-  headerTitle: { fontSize: 28, fontWeight: '800', color: '#3D2817', lineHeight: 34 },
-  headerSubtitle: { fontSize: 12, color: '#7D6B56', fontWeight: '600', marginTop: 2 },
+  headerTitle: {
+    fontSize: 28,
+    fontWeight: '800',
+    color: VINTAGE_COLORS.textPrimary,
+    lineHeight: 34,
+    fontFamily: VINTAGE_FONTS.serif,
+  },
+  headerSubtitle: { fontSize: 12, color: VINTAGE_COLORS.textMuted, fontWeight: '600', marginTop: 2 },
+  cartButton: {
+    position: 'relative',
+    padding: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cartBadge: {
+    position: 'absolute',
+    top: 2,
+    right: 2,
+    backgroundColor: VINTAGE_COLORS.accent,
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cartBadgeText: { color: VINTAGE_COLORS.white, fontSize: 10, fontWeight: '800' },
 
   categoriesScroll: {
-    maxHeight: 52,
+    maxHeight: 56,
   },
   categoriesContainer: {
     paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingVertical: 6,
     alignItems: 'center',
     gap: 8,
   },
   categoryChip: {
     paddingHorizontal: 18,
     paddingVertical: 8,
-    borderRadius: 20,
-    backgroundColor: '#F4E8D8',
+    minHeight: 44,
+    justifyContent: 'center',
+    borderRadius: VINTAGE_RADIUS.pill,
+    backgroundColor: VINTAGE_COLORS.card,
     borderWidth: 1,
-    borderColor: '#D9CCC0',
+    borderColor: VINTAGE_COLORS.cardBorder,
     marginRight: 8,
   },
   categoryChipActive: {
-    backgroundColor: '#8B7355',
-    borderColor: '#8B7355',
+    backgroundColor: VINTAGE_COLORS.brown,
+    borderColor: VINTAGE_COLORS.brown,
   },
   categoryChipText: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#7D6B56',
+    color: VINTAGE_COLORS.textMuted,
   },
   categoryChipTextActive: {
-    color: 'white',
+    color: VINTAGE_COLORS.white,
   },
 
   productsGrid: {
@@ -62,10 +90,10 @@ export const storeStyles = StyleSheet.create({
 
   card: {
     width: CARD_WIDTH,
-    backgroundColor: '#F4E8D8',
-    borderRadius: 10,
+    backgroundColor: VINTAGE_COLORS.card,
+    borderRadius: VINTAGE_RADIUS.card,
     overflow: 'hidden',
-    shadowColor: '#000',
+    shadowColor: VINTAGE_COLORS.shadow,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.15,
     shadowRadius: 3,
@@ -79,7 +107,7 @@ export const storeStyles = StyleSheet.create({
   cardImagePlaceholder: {
     width: '100%',
     height: CARD_WIDTH * 0.85,
-    backgroundColor: '#DFD4C4',
+    backgroundColor: VINTAGE_COLORS.placeholder,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -91,7 +119,7 @@ export const storeStyles = StyleSheet.create({
   cardCategory: {
     fontSize: 10,
     fontWeight: '700',
-    color: '#C85A54',
+    color: VINTAGE_COLORS.accent,
     textTransform: 'uppercase',
     letterSpacing: 1,
     marginBottom: 3,
@@ -99,23 +127,25 @@ export const storeStyles = StyleSheet.create({
   cardName: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#3D2817',
+    color: VINTAGE_COLORS.textPrimary,
     marginBottom: 4,
   },
   cardPrice: {
     fontSize: 16,
     fontWeight: '800',
-    color: '#5D4B38',
+    color: VINTAGE_COLORS.textSecondary,
     marginBottom: 8,
   },
   cardButton: {
-    backgroundColor: '#8B7355',
+    backgroundColor: VINTAGE_COLORS.brown,
     paddingVertical: 8,
-    borderRadius: 6,
+    minHeight: 44,
+    justifyContent: 'center',
+    borderRadius: VINTAGE_RADIUS.button,
     alignItems: 'center',
   },
   cardButtonText: {
-    color: 'white',
+    color: VINTAGE_COLORS.white,
     fontSize: 12,
     fontWeight: '700',
   },
@@ -126,33 +156,41 @@ export const storeStyles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: '#5A7A72',
+    backgroundColor: VINTAGE_COLORS.teal,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingVertical: 14,
+    paddingVertical: 12,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
-    shadowColor: '#000',
+    shadowColor: VINTAGE_COLORS.shadow,
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.15,
     shadowRadius: 4,
     elevation: 8,
   },
   cartBarText: {
-    color: 'white',
+    color: VINTAGE_COLORS.white,
     fontSize: 15,
     fontWeight: '700',
+  },
+  cartBarTotal: {
+    color: 'rgba(255,255,255,0.8)',
+    fontSize: 12,
+    fontWeight: '600',
+    marginTop: 2,
   },
   cartBarButton: {
     backgroundColor: 'rgba(255,255,255,0.2)',
     paddingHorizontal: 20,
     paddingVertical: 10,
-    borderRadius: 8,
+    minHeight: 44,
+    justifyContent: 'center',
+    borderRadius: VINTAGE_RADIUS.button,
   },
   cartBarButtonText: {
-    color: 'white',
+    color: VINTAGE_COLORS.white,
     fontSize: 14,
     fontWeight: '800',
   },
@@ -166,7 +204,7 @@ export const storeStyles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 14,
-    color: '#7D6B56',
+    color: VINTAGE_COLORS.textMuted,
     fontWeight: '600',
   },
 });

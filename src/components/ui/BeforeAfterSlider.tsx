@@ -70,7 +70,7 @@ export function BeforeAfterSlider({
       <View
         style={[
           styles.handleContainer,
-          { left: splitPosition - 18, top: containerHeight / 2 - 18 },
+          { left: splitPosition - 22, top: containerHeight / 2 - 22 },
         ]}
         {...panResponder.panHandlers}
       >
@@ -125,15 +125,15 @@ const styles = StyleSheet.create({
   handleContainer: {
     position: 'absolute',
     zIndex: 20,
-    width: 36,
-    height: 36,
+    width: 44,
+    height: 44,
     alignItems: 'center',
     justifyContent: 'center',
   },
   handleOuter: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     backgroundColor: VINTAGE_COLORS.gold,
     borderWidth: 3,
     borderColor: '#F5F0EA',
@@ -146,15 +146,15 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   handleInner: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     backgroundColor: '#D4A84A',
     alignItems: 'center',
     justifyContent: 'center',
   },
   handleArrows: {
-    fontSize: 14,
+    fontSize: 16,
     color: VINTAGE_COLORS.white,
     fontWeight: '900',
   },
