@@ -1,5 +1,6 @@
 // filepath: src/components/ui/index.ts
 export { VintageTabBar } from './VintageTabBar';
+export { VintageBackHeader } from './VintageBackHeader';
 export { ParchmentView } from './ParchmentView';
 export { ParchmentCard } from './ParchmentCard';
 export { RibbonBadge } from './RibbonBadge';

@@ -28,9 +28,9 @@ export default function RootLayout() {
       <CartProvider>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="street/[id]" options={{ title: 'Detalle', headerBackTitle: 'Volver' }} />
-          <Stack.Screen name="calles" options={{ title: 'Explorar calles', headerBackTitle: 'Volver' }} />
-          <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Carrito' }} />
+          <Stack.Screen name="street/[id]" options={{ headerShown: false }} />
+          <Stack.Screen name="calles" options={{ headerShown: false }} />
+          <Stack.Screen name="modal" options={{ presentation: 'modal', headerShown: false }} />
         </Stack>
         <StatusBar style="dark" />
       </CartProvider>

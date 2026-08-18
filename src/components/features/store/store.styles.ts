@@ -8,7 +8,7 @@ const H_PADDING = 16;
 const CARD_WIDTH = (SCREEN_WIDTH - H_PADDING * 2 - CARD_GAP) / 2;
 
 export const storeStyles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: VINTAGE_COLORS.parchment },
+  container: { flex: 1 },
 
   header: {
     flexDirection: 'row',
@@ -44,39 +44,6 @@ export const storeStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   cartBadgeText: { color: VINTAGE_COLORS.white, fontSize: 10, fontWeight: '800' },
-
-  categoriesScroll: {
-    maxHeight: 56,
-  },
-  categoriesContainer: {
-    paddingHorizontal: 16,
-    paddingVertical: 6,
-    alignItems: 'center',
-    gap: 8,
-  },
-  categoryChip: {
-    paddingHorizontal: 18,
-    paddingVertical: 8,
-    minHeight: 44,
-    justifyContent: 'center',
-    borderRadius: VINTAGE_RADIUS.pill,
-    backgroundColor: VINTAGE_COLORS.card,
-    borderWidth: 1,
-    borderColor: VINTAGE_COLORS.cardBorder,
-    marginRight: 8,
-  },
-  categoryChipActive: {
-    backgroundColor: VINTAGE_COLORS.brown,
-    borderColor: VINTAGE_COLORS.brown,
-  },
-  categoryChipText: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: VINTAGE_COLORS.textMuted,
-  },
-  categoryChipTextActive: {
-    color: VINTAGE_COLORS.white,
-  },
 
   productsGrid: {
     paddingHorizontal: H_PADDING,
@@ -195,16 +162,137 @@ export const storeStyles = StyleSheet.create({
     fontWeight: '800',
   },
 
-  emptyContainer: {
+  /** Purchase mode modal */
+  modalOverlay: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 60,
-    gap: 12,
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: 'rgba(61, 40, 23, 0.45)',
   },
-  emptyText: {
-    fontSize: 14,
+  modalCard: {
+    width: '100%',
+    maxWidth: 420,
+    backgroundColor: VINTAGE_COLORS.card,
+    borderRadius: VINTAGE_RADIUS.card,
+    borderWidth: 1,
+    borderColor: VINTAGE_COLORS.cardBorderDark,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 4,
+  },
+  modalTitle: {
+    flex: 1,
+    fontSize: 20,
+    fontWeight: '800',
+    color: VINTAGE_COLORS.textPrimary,
+    fontFamily: VINTAGE_FONTS.serif,
+    marginRight: 8,
+  },
+  modalSubtitle: {
+    fontSize: 12,
     color: VINTAGE_COLORS.textMuted,
     fontWeight: '600',
+    marginBottom: 14,
+  },
+  modalCloseButton: {
+    minWidth: 44,
+    minHeight: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: -8,
+    borderRadius: VINTAGE_RADIUS.button,
+  },
+  modalCloseButtonPressed: {
+    opacity: 0.6,
+    backgroundColor: 'rgba(61, 40, 23, 0.08)',
+  },
+  modalOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    minHeight: 56,
+    backgroundColor: VINTAGE_COLORS.parchmentLight,
+    borderWidth: 1,
+    borderColor: VINTAGE_COLORS.cardBorder,
+    borderRadius: VINTAGE_RADIUS.button,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    marginBottom: 10,
+  },
+  modalOptionActive: {
+    borderColor: VINTAGE_COLORS.brown,
+    backgroundColor: VINTAGE_COLORS.parchment,
+  },
+  modalOptionPressed: {
+    opacity: 0.8,
+  },
+  modalOptionBody: {
+    flex: 1,
+  },
+  modalOptionTitle: {
+    fontSize: 15,
+    fontWeight: '800',
+    color: VINTAGE_COLORS.textPrimary,
+  },
+  modalOptionDescription: {
+    fontSize: 12,
+    color: VINTAGE_COLORS.textDescription,
+    lineHeight: 16,
+    marginTop: 2,
+  },
+  modalOptionPrice: {
+    fontSize: 13,
+    fontWeight: '800',
+    color: VINTAGE_COLORS.brown,
+  },
+  modalConfirmPrice: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: VINTAGE_COLORS.brown,
+    marginBottom: 12,
+  },
+  modalBackButton: {
+    alignSelf: 'flex-start',
+    minHeight: 44,
+    justifyContent: 'center',
+    paddingVertical: 8,
+    paddingRight: 12,
+  },
+  modalBackButtonText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: VINTAGE_COLORS.brown,
+  },
+  modalInputLabel: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: VINTAGE_COLORS.textMuted,
+    marginBottom: 6,
+  },
+  modalInput: {
+    backgroundColor: VINTAGE_COLORS.parchmentLight,
+    borderWidth: 1,
+    borderColor: VINTAGE_COLORS.cardBorder,
+    borderRadius: VINTAGE_RADIUS.button,
+    color: VINTAGE_COLORS.textPrimary,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    fontSize: 14,
+    minHeight: 44,
+    marginBottom: 12,
+  },
+  modalErrorText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: VINTAGE_COLORS.accent,
+    marginBottom: 10,
+  },
+  modalConfirmButton: {
+    marginTop: 4,
+    minHeight: 44,
   },
 });
