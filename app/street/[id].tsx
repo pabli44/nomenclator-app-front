@@ -7,11 +7,14 @@ import { ParchmentCard, ParchmentView, VintageBackHeader, VintageButton } from '
 import { streets } from '@/src/data/streets';
 import { StreetView } from '@/src/components/features/mapa/StreetView';
 import { VINTAGE_COLORS, VINTAGE_FONTS } from '@/src/constants/vintage';
+import { useCollection } from '@/src/state/collection-context';
 
 export default function StreetDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
+  const { savedStreetIds, toggleSaveStreet } = useCollection();
   const street = streets.find((s) => s.id === id);
+  const isSaved = id ? savedStreetIds.has(id) : false;
 
   if (!street) {
     return (
@@ -72,7 +75,23 @@ export default function StreetDetailScreen() {
       style={{ flex: 1, backgroundColor: VINTAGE_COLORS.parchment }}
       edges={['top', 'left', 'right']}
     >
-      <VintageBackHeader title={street.name} />
+      <VintageBackHeader
+        title={street.name}
+        trailing={
+          <Pressable
+            onPress={() => id && void toggleSaveStreet(id)}
+            hitSlop={4}
+            accessibilityRole="button"
+            accessibilityLabel={isSaved ? 'Quitar de guardados' : 'Guardar calle'}
+          >
+            <Ionicons
+              name={isSaved ? 'bookmark' : 'bookmark-outline'}
+              size={24}
+              color={isSaved ? VINTAGE_COLORS.accent : VINTAGE_COLORS.brown}
+            />
+          </Pressable>
+        }
+      />
       <StreetView street={street} />
     </SafeAreaView>
   );

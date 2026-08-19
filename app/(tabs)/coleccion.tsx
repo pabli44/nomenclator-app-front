@@ -6,12 +6,11 @@ import { useRouter } from 'expo-router';
 
 import { ParchmentCard, RibbonBadge, VintageButton } from '@/src/components/ui';
 import { streets } from '@/src/data/streets';
+import { products } from '@/src/data/products';
 import { VINTAGE_COLORS, VINTAGE_FONTS, VINTAGE_RADIUS } from '@/src/constants/vintage';
+import { useCollection } from '@/src/state/collection-context';
 
 const TABS = ['Favoritos', 'Recuerdos', 'Esquelas'];
-
-// Sample saved places (first 3 streets)
-const savedPlaces = streets.slice(0, 3);
 
 // Sample memories grid
 const memories = [
@@ -24,13 +23,13 @@ const memories = [
 export default function ColeccionScreen() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('Favoritos');
-  const [favorites, setFavorites] = useState<string[]>(savedPlaces.map((p) => p.id));
+  const { savedStreetIds, likedPostalIds, toggleSaveStreet, toggleLikePostal } = useCollection();
 
-  const toggleFavorite = (id: string) => {
-    setFavorites((prev) =>
-      prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id],
-    );
-  };
+  // Filter streets that are saved by the user
+  const savedStreets = streets.filter((place) => savedStreetIds.has(place.id));
+
+  // Filter products (postals) that are liked by the user
+  const likedPostals = products.filter((product) => likedPostalIds.has(product.id));
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: VINTAGE_COLORS.parchment }} edges={['top', 'left', 'right']}>
@@ -122,68 +121,150 @@ export default function ColeccionScreen() {
                 </Pressable>
               </View>
 
-              {savedPlaces.map((place) => {
-                const isFavorite = favorites.includes(place.id);
-                return (
-                  <Pressable
-                    key={place.id}
-                    onPress={() => router.push(`/street/${place.id}` as any)}
-                    style={{ marginBottom: 10 }}
+              {savedStreets.length === 0 && likedPostals.length === 0 ? (
+                <View style={{ alignItems: 'center', paddingVertical: 32, gap: 12 }}>
+                  <Ionicons name="heart-outline" size={48} color={VINTAGE_COLORS.cardBorder} />
+                  <Text style={{ fontSize: 14, color: VINTAGE_COLORS.textMuted, textAlign: 'center' }}>
+                    No tienes lugares guardados aún.{'\n'}Explora las calles y postaless para guardarlos.
+                  </Text>
+                  <VintageButton
+                    onPress={() => router.push('/calles' as any)}
+                    color={VINTAGE_COLORS.white}
+                    style={{
+                      paddingHorizontal: 20,
+                      paddingVertical: 8,
+                      minHeight: 40,
+                      justifyContent: 'center',
+                    }}
                   >
-                    <ParchmentCard>
-                      <View style={{ flexDirection: 'row', gap: 12 }}>
-                        {place.imageBefore ? (
-                          <Image
-                            source={place.imageBefore}
-                            style={{ width: 56, height: 56, borderRadius: 8 }}
-                            resizeMode="cover"
-                          />
-                        ) : (
-                          <View
-                            style={{
-                              width: 56,
-                              height: 56,
-                              borderRadius: 8,
-                              backgroundColor: VINTAGE_COLORS.placeholder,
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                            }}
-                          >
-                            <Ionicons name="location-outline" size={28} color={VINTAGE_COLORS.placeholderText} />
+                    <Text style={{ fontSize: 13, fontWeight: '600', color: VINTAGE_COLORS.accent }}>
+                      Explorar calles
+                    </Text>
+                  </VintageButton>
+                </View>
+              ) : (
+                <>
+                  {/* Streets saved */}
+                  {savedStreets.map((place) => {
+                    return (
+                      <Pressable
+                        key={`street-${place.id}`}
+                        onPress={() => router.push(`/street/${place.id}` as any)}
+                        style={{ marginBottom: 10 }}
+                      >
+                        <ParchmentCard>
+                          <View style={{ flexDirection: 'row', gap: 12 }}>
+                            {place.imageBefore ? (
+                              <Image
+                                source={place.imageBefore}
+                                style={{ width: 56, height: 56, borderRadius: 8 }}
+                                resizeMode="cover"
+                              />
+                            ) : (
+                              <View
+                                style={{
+                                  width: 56,
+                                  height: 56,
+                                  borderRadius: 8,
+                                  backgroundColor: VINTAGE_COLORS.placeholder,
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}
+                              >
+                                <Ionicons name="location-outline" size={28} color={VINTAGE_COLORS.placeholderText} />
+                              </View>
+                            )}
+                            <View style={{ flex: 1, justifyContent: 'center', gap: 4 }}>
+                              <Text style={{ fontSize: 14, fontWeight: '700', color: VINTAGE_COLORS.textPrimary }}>
+                                {place.name}
+                              </Text>
+                              <RibbonBadge label={place.period} />
+                              <Text
+                                style={{ fontSize: 11, color: VINTAGE_COLORS.textDescription, lineHeight: 15 }}
+                                numberOfLines={2}
+                              >
+                                {place.description}
+                              </Text>
+                            </View>
+                            <Pressable
+                              style={{ alignSelf: 'center', padding: 12 }}
+                              onPress={() => void toggleSaveStreet(place.id)}
+                              hitSlop={4}
+                              accessibilityRole="button"
+                              accessibilityLabel={`Quitar ${place.name} de guardados`}
+                            >
+                              <Ionicons
+                                name="bookmark"
+                                size={20}
+                                color={VINTAGE_COLORS.accent}
+                              />
+                            </Pressable>
                           </View>
-                        )}
-                        <View style={{ flex: 1, justifyContent: 'center', gap: 4 }}>
-                          <Text style={{ fontSize: 14, fontWeight: '700', color: VINTAGE_COLORS.textPrimary }}>
-                            {place.name}
-                          </Text>
-                          <RibbonBadge label={place.period} />
-                          <Text
-                            style={{ fontSize: 11, color: VINTAGE_COLORS.textDescription, lineHeight: 15 }}
-                            numberOfLines={2}
-                          >
-                            {place.description}
-                          </Text>
-                        </View>
-                        <Pressable
-                          style={{ alignSelf: 'center', padding: 12 }}
-                          onPress={() => toggleFavorite(place.id)}
-                          hitSlop={4}
-                          accessibilityRole="button"
-                          accessibilityLabel={
-                            isFavorite ? `Quitar ${place.name} de favoritos` : `Agregar ${place.name} a favoritos`
-                          }
-                        >
-                          <Ionicons
-                            name={isFavorite ? 'heart' : 'heart-outline'}
-                            size={20}
-                            color={isFavorite ? VINTAGE_COLORS.accent : VINTAGE_COLORS.cardBorderDark}
-                          />
-                        </Pressable>
-                      </View>
-                    </ParchmentCard>
-                  </Pressable>
-                );
-              })}
+                        </ParchmentCard>
+                      </Pressable>
+                    );
+                  })}
+                  {/* Postals liked */}
+                  {likedPostals.map((postal) => {
+                    return (
+                      <Pressable
+                        key={`postal-${postal.id}`}
+                        style={{ marginBottom: 10 }}
+                      >
+                        <ParchmentCard>
+                          <View style={{ flexDirection: 'row', gap: 12 }}>
+                            {postal.image ? (
+                              <Image
+                                source={postal.image}
+                                style={{ width: 56, height: 56, borderRadius: 8 }}
+                                resizeMode="cover"
+                              />
+                            ) : (
+                              <View
+                                style={{
+                                  width: 56,
+                                  height: 56,
+                                  borderRadius: 8,
+                                  backgroundColor: VINTAGE_COLORS.placeholder,
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}
+                              >
+                                <Ionicons name="mail-outline" size={28} color={VINTAGE_COLORS.placeholderText} />
+                              </View>
+                            )}
+                            <View style={{ flex: 1, justifyContent: 'center', gap: 4 }}>
+                              <Text style={{ fontSize: 14, fontWeight: '700', color: VINTAGE_COLORS.textPrimary }}>
+                                {postal.name}
+                              </Text>
+                              <RibbonBadge label={postal.category} />
+                              <Text
+                                style={{ fontSize: 11, color: VINTAGE_COLORS.textDescription, lineHeight: 15 }}
+                                numberOfLines={2}
+                              >
+                                {postal.description}
+                              </Text>
+                            </View>
+                            <Pressable
+                              style={{ alignSelf: 'center', padding: 12 }}
+                              onPress={() => void toggleLikePostal(postal.id)}
+                              hitSlop={4}
+                              accessibilityRole="button"
+                              accessibilityLabel={`Quitar ${postal.name} de guardados`}
+                            >
+                              <Ionicons
+                                name="heart"
+                                size={20}
+                                color={VINTAGE_COLORS.accent}
+                              />
+                            </Pressable>
+                          </View>
+                        </ParchmentCard>
+                      </Pressable>
+                    );
+                  })}
+                </>
+              )}
             </View>
 
             {/* Cartagena en Recuerdos */}
