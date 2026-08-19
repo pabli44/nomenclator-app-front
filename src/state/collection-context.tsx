@@ -90,6 +90,7 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
   const toggleLikePostal = useCallback(
     async (id: string) => {
       const wasLiked = likedPostalIds.has(id);
+      // Skip if already toggling (prevent double-call)
       setLikedPostalIds((prev) => (wasLiked ? withoutId(prev, id) : withId(prev, id)));
       try {
         if (wasLiked) {
@@ -98,8 +99,9 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
           await likePostal(id);
         }
       } catch (error) {
+        // Rollback on failure
         setLikedPostalIds((prev) => (wasLiked ? withId(prev, id) : withoutId(prev, id)));
-        console.warn('[collection] like toggle failed; rolled back', error);
+        console.error('[collection] like toggle failed:', error);
       }
     },
     [likedPostalIds],
@@ -117,7 +119,7 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
         }
       } catch (error) {
         setSavedStreetIds((prev) => (wasSaved ? withId(prev, id) : withoutId(prev, id)));
-        console.warn('[collection] street save toggle failed; rolled back', error);
+        console.error('[collection] street save toggle failed:', error);
       }
     },
     [savedStreetIds],
@@ -135,7 +137,7 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
         }
       } catch (error) {
         setSavedPostalIds((prev) => (wasSaved ? withId(prev, id) : withoutId(prev, id)));
-        console.warn('[collection] postal save toggle failed; rolled back', error);
+        console.error('[collection] postal save toggle failed:', error);
       }
     },
     [savedPostalIds],
