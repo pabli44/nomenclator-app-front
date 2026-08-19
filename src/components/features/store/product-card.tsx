@@ -16,6 +16,7 @@ import { ParchmentCard } from '@/src/components/ui';
 import { VINTAGE_COLORS } from '@/src/constants/vintage';
 import { type Product } from '@/src/data/products';
 import { type Personalization, type PurchaseVariant } from '@/src/state/cart-context';
+import { useCollection } from '@/src/state/collection-context';
 import { ThemedText } from '../../shared';
 import { storeStyles } from './store.styles';
 
@@ -69,6 +70,8 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, onAddToCart }: ProductCardProps) {
+  const { likedPostalIds, toggleLikePostal } = useCollection();
+  const liked = likedPostalIds.has(product.id);
   const [added, setAdded] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState<PurchaseVariant | null>(null);
@@ -237,6 +240,19 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
           <Ionicons name="image" size={36} color={VINTAGE_COLORS.placeholderText} />
         </View>
       )}
+      <Pressable
+        style={({ pressed }) => [storeStyles.cardLikeButton, pressed && { opacity: 0.7 }]}
+        onPress={() => void toggleLikePostal(product.id)}
+        hitSlop={8}
+        accessibilityRole="button"
+        accessibilityLabel={liked ? `Quitar like de ${product.name}` : `Dar like a ${product.name}`}
+      >
+        <Ionicons
+          name={liked ? 'heart' : 'heart-outline'}
+          size={20}
+          color={liked ? VINTAGE_COLORS.accent : VINTAGE_COLORS.textSecondary}
+        />
+      </Pressable>
       <View style={storeStyles.cardBody}>
         <View>
           <ThemedText style={storeStyles.cardCategory}>{product.category}</ThemedText>

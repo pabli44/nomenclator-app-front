@@ -78,6 +78,18 @@ export const storeStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  cardLikeButton: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255,255,255,0.92)',
+    zIndex: 1,
+  },
   cardBody: {
     padding: 10,
     flex: 1,

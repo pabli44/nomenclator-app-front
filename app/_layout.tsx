@@ -5,6 +5,8 @@ import 'react-native-reanimated';
 
 import { VINTAGE_COLORS } from '@/src/constants/vintage';
 import { CartProvider } from '@/src/state/cart-context';
+import { AuthProvider } from '@/src/state/auth-context';
+import { CollectionProvider } from '@/src/state/collection-context';
 
 export const unstable_settings = {
   anchor: '(tabs)',
@@ -25,15 +27,19 @@ const NavTheme = {
 export default function RootLayout() {
   return (
     <ThemeProvider value={NavTheme}>
-      <CartProvider>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="street/[id]" options={{ headerShown: false }} />
-          <Stack.Screen name="calles" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: 'modal', headerShown: false }} />
-        </Stack>
-        <StatusBar style="dark" />
-      </CartProvider>
+      <AuthProvider>
+        <CollectionProvider>
+          <CartProvider>
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="street/[id]" options={{ headerShown: false }} />
+              <Stack.Screen name="calles" options={{ headerShown: false }} />
+              <Stack.Screen name="modal" options={{ presentation: 'modal', headerShown: false }} />
+            </Stack>
+            <StatusBar style="dark" />
+          </CartProvider>
+        </CollectionProvider>
+      </AuthProvider>
     </ThemeProvider>
   );
 }
