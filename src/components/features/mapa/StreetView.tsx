@@ -1,5 +1,4 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useState } from 'react';
 import { Alert, ScrollView, View, Image } from 'react-native';
 
 import { ThemedText } from '../../shared';
@@ -7,6 +6,7 @@ import { type Street } from '@/src/data/streets';
 import { streetViewStyles } from './street-view.styles';
 import { BeforeAfterSlider, ParchmentView, ParchmentCard, RibbonBadge, VintageButton } from '@/src/components/ui';
 import { VINTAGE_COLORS } from '@/src/constants/vintage';
+import { useCollection } from '@/src/state/collection-context';
 
 interface StreetViewProps {
   street: Street;
@@ -14,9 +14,12 @@ interface StreetViewProps {
 
 export function StreetView({ street }: StreetViewProps) {
   const hasBothImages = !!street.imageBefore && !!street.imageAfter;
-  const [saved, setSaved] = useState(false);
+  const { savedStreetIds, toggleSaveStreet } = useCollection();
+  const saved = savedStreetIds.has(street.id);
 
-  const toggleSave = () => setSaved((value) => !value);
+  const toggleSave = () => {
+    void toggleSaveStreet(street.id);
+  };
 
   const handleBuyImage = () => {
     Alert.alert(
