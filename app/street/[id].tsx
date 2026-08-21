@@ -1,12 +1,12 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { ParchmentCard, ParchmentView, VintageBackHeader, VintageButton } from '@/src/components/ui';
-import { streets } from '@/src/data/streets';
 import { StreetView } from '@/src/components/features/mapa/StreetView';
+import { ParchmentCard, ParchmentView, VintageBackHeader, VintageButton } from '@/src/components/ui';
 import { VINTAGE_COLORS, VINTAGE_FONTS } from '@/src/constants/vintage';
+import { streets } from '@/src/data/streets';
 import { useCollection } from '@/src/state/collection-context';
 
 export default function StreetDetailScreen() {
