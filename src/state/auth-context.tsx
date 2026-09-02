@@ -18,26 +18,23 @@ const TOKEN_KEY = 'nomenclator.jwt';
 const DEVICE_ID_KEY = 'nomenclator.deviceId';
 
 /**
- * expo-secure-store has no web implementation; keep a per-session memory
- * fallback so the web bundle (static export) does not crash on first call.
- * Native devices get real keychain/keystore persistence (design D9).
+ * expo-secure-store has no web implementation; use localStorage on web for
+ * real persistence across sessions. Native devices get keychain/keystore.
  */
-const memoryStore = new Map<string, string>();
-
 function isWeb(): boolean {
   return Platform.OS === 'web';
 }
 
 async function getSecure(key: string): Promise<string | null> {
   if (isWeb()) {
-    return memoryStore.get(key) ?? null;
+    return localStorage.getItem(key);
   }
   return SecureStore.getItemAsync(key);
 }
 
 async function setSecure(key: string, value: string): Promise<void> {
   if (isWeb()) {
-    memoryStore.set(key, value);
+    localStorage.setItem(key, value);
     return;
   }
   await SecureStore.setItemAsync(key, value);
